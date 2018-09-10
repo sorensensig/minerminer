@@ -1,0 +1,17 @@
+// DOCUMENTATION
+// https://sass-lang.com/documentation/file.SASS_REFERENCE.html
+
+// run the following command in the terminal: watch-css
+
+// SOURCE
+// https://medium.com/@brianhan/watch-compile-your-sass-with-npm-9ba2b878415b
+
+$badass: #bada55;
+body {
+  margin: 0;
+  background-color: $badass;
+}
+
+p {
+  margin: 5px;
+}
