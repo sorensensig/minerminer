@@ -11,8 +11,10 @@
   "author": "Team Pixie",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "ejs": "^2.6.1",
-    "express": "^4.16.3"
+    "express": "^4.16.3",
+    "npm": "^6.4.1"
   },
   "devDependencies": {
     "node-sass": "^4.9.3",
