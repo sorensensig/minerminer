@@ -8,6 +8,24 @@ app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => res.render('home'));
 
+app.get('/tutorial', (req, res) => res.render('tutorial'));
+
+app.get('/game', function(req, res){
+   res.render('game');
+});
+
+app.get('/employee-folder', function(req, res){
+   res.render('employeeFolder');
+});
+
+app.get('/whs-policies', function(req, res){
+    res.render('whsPolicies');
+});
+
+app.get('/monthly-rapport', function(req, res){
+   res.render('monthlyRapport');
+});
+
 // This here code is just a sample code to be used as reference when coding similar functions.
 // This code should not be a part of the final delivery.
 let friends = ['Al', 'Aslam', 'Thomas', 'Sigurd'];
