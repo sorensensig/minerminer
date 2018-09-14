@@ -1,14 +1,15 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const api = require('./api');
+const api = require('./api')
+const session = require('express-sessions');
 
 const policies = require('./policies');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
-app.use(session({secret: 'secret-token'}));
+//app.use(session({secret: 'secret-token'}));
 
 let allWorkers = [];
 let currentWorkers = [];
@@ -22,24 +23,21 @@ app.get('/', async function(req, res){
     currentWorkers = await api.createAvailableWorkers();
     currentWorkers = api.getCurrentWorkers();
 
-    let sessionData = req.session;
-    users.push(new User());
-    sessionData.userId = user.length()-1;
-
-app.get('/', (req, res) => res.render('home'));
+    //let sessionData = req.session;
+    //users.push(new User());
+    //sessionData.userId = user.length()-1;
     res.render('home');
 });
+
 
 app.get('/tutorial', (req, res) => res.render('tutorial'));
 
 app.get('/game', function(req, res){
-   res.render('game');
     // Insert user progress to game for each time, as the user gets redirected to game many times.
     res.render('game');
 });
 
 app.get('/employee-folder', function(req, res){
-   res.render('employeeFolder');
     currentWorkers = api.getCurrentWorkers();
 
    res.render('employeeFolder', {workers: currentWorkers});
@@ -50,8 +48,6 @@ app.get('/whs-policies', async function(req, res){
     res.render('whsPolicies', {data: data});
 });
 
-app.get('/whs-policies', function(req, res){
-    res.render('whsPolicies');
 app.get('/whs-policies/:option', function(req, res) {
     let option = req.params.option;
     res.redirect('/game');

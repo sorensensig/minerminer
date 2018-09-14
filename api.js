@@ -9,7 +9,7 @@ let currentWorkers = [];
 
 function makeAllWorkers(){
     return new Promise(function(resolve, reject){
-        URL = "https://data.gov.au/api/3/action/datastore_search?resource_id=63fd8050-0bab-4c04-b837-b2ce664077bf&limit=8903"
+        URL = "https://data.gov.au/api/3/action/datastore_search?resource_id=63fd8050-0bab-4c04-b837-b2ce664077bf&limit=5000"
         request(URL, function(error, response, body){
             let parsed = JSON.parse(body);
 
