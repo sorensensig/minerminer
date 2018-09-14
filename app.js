@@ -1,29 +1,71 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const api = require('./api');
+
+const policies = require('./policies');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
+app.use(session({secret: 'secret-token'}));
+
+let allWorkers = [];
+let currentWorkers = [];
+let done;
+let users = [];
+
+
+
+app.get('/', async function(req, res){
+    allWorkers = await api.createAllWorkers();
+    currentWorkers = await api.createAvailableWorkers();
+    currentWorkers = api.getCurrentWorkers();
+
+    let sessionData = req.session;
+    users.push(new User());
+    sessionData.userId = user.length()-1;
 
 app.get('/', (req, res) => res.render('home'));
+    res.render('home');
+});
 
 app.get('/tutorial', (req, res) => res.render('tutorial'));
 
 app.get('/game', function(req, res){
    res.render('game');
+    // Insert user progress to game for each time, as the user gets redirected to game many times.
+    res.render('game');
 });
 
 app.get('/employee-folder', function(req, res){
    res.render('employeeFolder');
+    currentWorkers = api.getCurrentWorkers();
+
+   res.render('employeeFolder', {workers: currentWorkers});
+});
+
+app.get('/whs-policies', async function(req, res){
+    let data = await policies.getRandomPolicy();
+    res.render('whsPolicies', {data: data});
 });
 
 app.get('/whs-policies', function(req, res){
     res.render('whsPolicies');
+app.get('/whs-policies/:option', function(req, res) {
+    let option = req.params.option;
+    res.redirect('/game');
 });
 
 app.get('/monthly-rapport', function(req, res){
    res.render('monthlyRapport');
+    res.render('monthlyRapport');
+});
+
+app.post('player-reset', function(req, res) {
+    // delete player object.
+    // NB we need to create a player object file first.
+    res.redirect('/');
 });
 
 // This here code is just a sample code to be used as reference when coding similar functions.

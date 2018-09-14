@@ -11,6 +11,7 @@
   "author": "Team Pixie",
   "license": "ISC",
   "dependencies": {
+    "ajax-request": "^1.2.3",
     "body-parser": "^1.18.3",
     "ejs": "^2.6.1",
     "express": "^4.16.3",

@@ -1,3 +1,8 @@
 <% include partials/header %>
 <h1> Employee Folder </h1>
+<ul>
+    <% workers.forEach(function(index){ %>
+        <li> <%= index.name%> </li>
+    <% }); %>
+</ul>
 <% include partials/footer %>

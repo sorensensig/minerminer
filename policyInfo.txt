@@ -1,0 +1,3 @@
+Object one text that is equal to the players choice ~ This is the deny option ~ this is the approve option
+*
+Object two text that is equal to the players choice ~ This is the deny option ~ this is the approve option
