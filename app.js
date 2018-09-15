@@ -13,38 +13,38 @@ app.set('view engine', 'ejs');
 
 app.use(session({secret: 'secret-token'}));
 
-let allWorkers = [];
-let currentWorkers = [];
-let done;
 let users = [];
 
 
 
 app.get('/', async function(req, res){
-    allWorkers = await api.getAllWorkers();
-    currentWorkers = await api.getCurrentWorkers();
-
-    if(!req.session.userId) {
+        if(!req.session.userId) {
         users.push(new user());
         req.session.userId = users.length-1;
         res.render('home');
     } else {
         res.render('home');
     }
+
+    await users[req.session.userId].setAllWorkers();
+    await users[req.session.userId].setCurrentWorkers();
+    console.log("Loaded");
+    //move to user
 });
 
 
 app.get('/tutorial', (req, res) => res.render('tutorial'));
 
 app.get('/game', function(req, res){
-    // Insert user progress to game for each time, as the user gets redirected to game many times.
     res.render('game');
+    console.log("Loady mc Loadface");
+    // Start timer in user for time limit for cycle
+    users[req.session.userId].startCycleTimer();
+    // Start timer in user for WHS Policy spawn
 });
 
 app.get('/employee-folder', async function(req, res){
-    currentWorkers = await api.getCurrentWorkers();
-
-   res.render('employeeFolder', {workers: currentWorkers});
+   res.render('employeeFolder', {workers: users[req.session.userId].getCurrentWorkers()});
 });
 
 app.get('/whs-policies', async function(req, res){

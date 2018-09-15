@@ -1,8 +1,17 @@
 const policies = require('./policies');
 const api = require('./api');
+const CYCLETIME = 30;
 
 let availablePolicies;
 let usedPolicies = [];
+let activePolicies = 0;
+
+let currentCycleTime = 0;
+let activeTimer = false;
+
+let allWorkers = [];
+let currentWorkers = [];
+
 
 function getRandNum() {
     return new Promise(async function(resolve, reject) {
@@ -13,6 +22,25 @@ function getRandNum() {
 function removePolicy(policyIndex) {
     usedPolicies.push(availablePolicies[policyIndex]);
     availablePolicies.splice(policyIndex, 1);
+}
+
+function cycleTimer(){
+    currentCycleTime = 0;
+    activeTimer = true;
+
+     let timer = setInterval(function(){
+        currentCycleTime ++;
+        if (currentCycleTime >= CYCLETIME){
+            // Also send player to end rapport screen
+            console.log("Time is up");
+            clearInterval(timer);
+        }
+        else if (currentCycleTime%5 === 0){
+            activePolicies ++;
+        }
+        console.log(currentCycleTime);
+
+     },1000 );
 }
 
 module.exports = function() {
@@ -30,6 +58,26 @@ module.exports = function() {
                     resolve(availablePolicies[index]);
                 }
             });
+        },
+        getAllWorkers: function(){
+            return allWorkers;
+        },
+        getCurrentWorkers: function(){
+            return currentWorkers;
+        },
+        setAllWorkers: async function(){
+            allWorkers = await api.getAllWorkers(allWorkers);
+        },
+        setCurrentWorkers: async function(){
+            currentWorkers = await api.getCurrentWorkers(allWorkers, currentWorkers);
+        },
+        startCycleTimer: function(){
+            if (!activeTimer){
+                cycleTimer();
+            }
+        },
+        getCurrentCycleTime: function(){
+            return currentCycleTime;
         }
     }
 };

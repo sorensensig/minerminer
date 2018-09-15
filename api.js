@@ -3,11 +3,9 @@
 // https://www.youtube.com/watch?v=dgdcXGxh93s
 
 let request = require("request");
-let allWorkers = [];
-let currentWorkers = [];
 
 
-function makeAllWorkers(){
+function makeAllWorkers(allWorkers){
     return new Promise(function(resolve, reject){
         URL = "https://data.gov.au/api/3/action/datastore_search?resource_id=63fd8050-0bab-4c04-b837-b2ce664077bf&limit=5000"
         request(URL, function(error, response, body){
@@ -57,10 +55,10 @@ function makeAllWorkers(){
 }
 
 
-function getWorkers(){
+function getWorkers(allWorkers){
     return new Promise(async function(resolve, reject){
         if(allWorkers.length === 0){
-            allWorkers = await makeAllWorkers();
+            allWorkers = await makeAllWorkers(allWorkers);
         }
         resolve(allWorkers);
     });
@@ -68,7 +66,7 @@ function getWorkers(){
 
 
 
-function makeCurrentWorkers(){
+function makeCurrentWorkers(allWorkers, currentWorkers){
     let amountOfHires = 10;
     let fatal = 5;
     let injured = 5;
@@ -96,10 +94,10 @@ function makeCurrentWorkers(){
 }
 
 
-function getCurrent(){
+function getCurrent(allWorkers, currentWorkers){
     return new Promise(async function(resolve, reject){
         if(currentWorkers.length === 0){
-            currentWorkers = await makeCurrentWorkers();
+            currentWorkers = await makeCurrentWorkers(allWorkers, currentWorkers);
         }
         resolve(currentWorkers);
     });
@@ -117,9 +115,9 @@ function printTheseWorkers(workers){
 }
 
 
-function findAllWorkerIndex(all, workers, index){
+function findAllWorkerIndex(allWorkers, workers, index){
     for(let i = 0; i < workers.length; i++){
-        if(workers[index].comment === all[i].comment){
+        if(workers[index].comment === allWorkers[i].comment){
             return i;
         }
     }
@@ -139,28 +137,28 @@ function findType(workers, type, type2){
 
 
 let makeExport = {
-    getCurrentWorkers: async function() {
-        return await getCurrent();
+    getAllWorkers: async function(allWorkers){
+        return await getWorkers(allWorkers);
     },
-    getAllWorkers: async function(){
-        return await getWorkers();
+    getCurrentWorkers: async function(allWorkers, currentWorkers) {
+        return await getCurrent(allWorkers, currentWorkers);
     },
-    fireWorker: function(all, workers, index){
-        let allIndex = findAllWorkerIndex(all, workers, index);
-        all[allIndex].employed = false;
+    fireWorker: function(allWorkers, workers, index){
+        let allIndex = findAllWorkerIndex(allWorkers, workers, index);
+        allWorkers[allIndex].employed = false;
         workers.splice(index, 1);
     },
-    injureWorker: function(all, workers){
+    injureWorker: function(allWorkers, workers){
         let index = findType(workers, "Injured", "Injured");
-        let allIndex = findAllWorkerIndex(all, workers, index);
-        all[allIndex].injured = true;
+        let allIndex = findAllWorkerIndex(allWorkers, workers, index);
+        allWorkers[allIndex].injured = true;
         workers[index].injured = true;
         return workers[index];
     },
-    killWorker: function(all, workers){
+    killWorker: function(allWorkers, workers){
         let index  = findType(workers, "Killed", "Fatal");
-        let allIndex = findAllWorkerIndex(all, workers, index);
-        all[allIndex].alive = false;
+        let allIndex = findAllWorkerIndex(allWorkers, workers, index);
+        allWorkers[allIndex].alive = false;
         workers[index].alive = false;
         return workers[index];
     },
