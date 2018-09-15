@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const api = require('./api')
+const api = require('./api');
 const session = require('express-sessions');
 
 const policies = require('./policies');
@@ -19,9 +19,8 @@ let users = [];
 
 
 app.get('/', async function(req, res){
-    allWorkers = await api.createAllWorkers();
-    currentWorkers = await api.createAvailableWorkers();
-    currentWorkers = api.getCurrentWorkers();
+    allWorkers = await api.getAllWorkers();
+    currentWorkers = await api.getCurrentWorkers();
 
     //let sessionData = req.session;
     //users.push(new User());
@@ -55,7 +54,6 @@ app.get('/whs-policies/:option', function(req, res) {
 
 app.get('/monthly-rapport', function(req, res){
    res.render('monthlyRapport');
-    res.render('monthlyRapport');
 });
 
 app.post('player-reset', function(req, res) {
