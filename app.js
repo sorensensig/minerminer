@@ -12,11 +12,8 @@ app.set('view engine', 'ejs');
 
 app.use(session({secret: 'secret-token'}));
 
-<<<<<<< HEAD
-=======
 let allWorkers = [];
 let currentWorkers = [];
->>>>>>> whs-policies-option
 let users = [];
 
 
