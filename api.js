@@ -78,11 +78,13 @@ function makeCurrentWorkers(){
         while (amountOfHires > 0 && counter < allWorkers.length){
             if (fatal > 0 && (allWorkers[counter].type === "Killed" || allWorkers[counter].type === "Fatal")){
                 fatal --;
+                amountOfHires --;
                 allWorkers[counter].employed = true;
                 currentWorkers.push(allWorkers[counter]);
             }
             else if (injured >= 0 && allWorkers[counter].type) {
                 injured --;
+                amountOfHires --;
                 currentWorkers.push(allWorkers[counter]);
                 allWorkers[counter].employed = true;
             }
@@ -96,10 +98,10 @@ function makeCurrentWorkers(){
 
 function getCurrent(){
     return new Promise(async function(resolve, reject){
-        if(allWorkers.length > 0){
-            allWorkers = await makeCurrentWorkers();
+        if(currentWorkers.length === 0){
+            currentWorkers = await makeCurrentWorkers();
         }
-        resolve(allWorkers);
+        resolve(currentWorkers);
     });
 }
 

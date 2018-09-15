@@ -2,8 +2,6 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const api = require('./api');
-const session = require('express-sessions');
 
 const policies = require('./policies');
 const api = require('./api');
@@ -43,8 +41,8 @@ app.get('/game', function(req, res){
     res.render('game');
 });
 
-app.get('/employee-folder', function(req, res){
-    currentWorkers = api.getCurrentWorkers();
+app.get('/employee-folder', async function(req, res){
+    currentWorkers = await api.getCurrentWorkers();
 
    res.render('employeeFolder', {workers: currentWorkers});
 });
