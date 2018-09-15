@@ -2,11 +2,14 @@
 const fs = require('fs');
 const filePath = './policyInfo.txt';
 
-function Policy(policyNumber, policyText, policyDenyOption, policyApproveOption){
+function Policy(policyNumber, policyTitle, policyText, policyDenyOption, policyApproveOption, policyDenyOptionFunction, policyApproveOptionFunction){
     this.policyNumber = policyNumber;
+    this.policyTitle = policyTitle;
     this.policyText = policyText;
     this.policyDenyOption = policyDenyOption;
     this.policyApproveOption = policyApproveOption;
+    this.policyDenyOptionFunction = policyDenyOptionFunction;
+    this.policyApproveOptionFunction = policyApproveOptionFunction;
 }
 
 let allPolicies = [];
@@ -26,33 +29,22 @@ function createPolicies() {
 
             for (let i = 0; i < objectsAsStringArray.length; i++) {
                 let toObject = objectsAsStringArray[i].split(' ~ ');
-                allPolicies[i] = new Policy(i, toObject[0], toObject[1], toObject[2]);
+                allPolicies[i] = new Policy(i, toObject[0], toObject[1], toObject[2], toObject[3], toObject[4], toObject[5]);
             }
             resolve();
         });
     })
 }
 
-function getRandNum() {
-    return Math.floor((Math.random() * allPolicies.length));
-}
-
-function deletePolicy(policyIndex) {
-    allPolicies.splice(policyIndex, 1);
-}
-
 module.exports = {
-    getRandomPolicy : function() {
+    getPolicies : function() {
         return new Promise(async function(resolve, reject) {
-            let index = await getRandNum();
             if(allPolicies.length > 0) {
-                resolve(allPolicies[index]);
-                deletePolicy(index);
+                resolve(allPolicies);
             } else {
                 await createPolicies();
-                resolve(allPolicies[index]);
-                deletePolicy(index);
+                resolve(allPolicies);
             }
-        })
+        });
     }
 };

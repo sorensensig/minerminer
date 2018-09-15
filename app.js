@@ -1,15 +1,17 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const api = require('./api')
-const session = require('express-sessions');
+const session = require('express-session');
 
 const policies = require('./policies');
+const api = require('./api');
+const user = require('./user');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
-//app.use(session({secret: 'secret-token'}));
+
+app.use(session({secret: 'secret-token'}));
 
 let allWorkers = [];
 let currentWorkers = [];
@@ -23,10 +25,13 @@ app.get('/', async function(req, res){
     currentWorkers = await api.createAvailableWorkers();
     currentWorkers = api.getCurrentWorkers();
 
-    //let sessionData = req.session;
-    //users.push(new User());
-    //sessionData.userId = user.length()-1;
-    res.render('home');
+    if(!req.session.userId) {
+        users.push(new user());
+        req.session.userId = users.length-1;
+        res.render('home');
+    } else {
+        res.render('home');
+    }
 });
 
 
@@ -44,12 +49,30 @@ app.get('/employee-folder', function(req, res){
 });
 
 app.get('/whs-policies', async function(req, res){
-    let data = await policies.getRandomPolicy();
-    res.render('whsPolicies', {data: data});
+    // swap out with users[index].getRandomPolicy(); or if this doesn't work, something else.
+    let data = await users[req.session.userId].getRandPolicy();
+    req.session.currentData = data;
+    console.log(req.session.currentData);
+    res.render('whsPolicies', {data: data.policyText});
 });
 
 app.get('/whs-policies/:option', function(req, res) {
-    let option = req.params.option;
+    // send to req ->>>
+    // whs Title
+    // option from front-end
+    // whs text
+    // whs consequence
+    // function for monthly-rapport to run
+
+    // let option = req.params.option;
+    /* if (option === 'approveOption') {
+            let approve = req.session.currentData.policyApproveOption;
+            req.session.
+       } else {
+            let deny = req.session.currentData.policyDenyOption;
+       }
+    //
+     */
     res.redirect('/game');
 });
 

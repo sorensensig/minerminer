@@ -1,3 +1,3 @@
-Object one text that is equal to the players choice ~ This is the deny option ~ this is the approve option
+PolicyTitle One ~ Object one text that is equal to the players choice ~ What happens on deny option ~ What happens on approve option ~ functionDeny ~ functionApprove
 *
-Object two text that is equal to the players choice ~ This is the deny option ~ this is the approve option
+PolicyTitle Two ~ Object two text that is equal to the players choice ~ What happens on deny option ~ What happens on approve option ~ functionDeny ~ functionApprove
