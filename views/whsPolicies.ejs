@@ -3,8 +3,12 @@
 
 <p> <%= data %></p>
 
-<!-- Approve Button - Value should be the string 'approveOption' -->
-<!-- Deny Button - Value should be the string 'denyOption -->
+<form action="/whs-policies/option" method="POST">
+    <input type="submit" name="approveOption" value="Approve">
+    <input type="submit" name="denyOption" value="Deny">
+</form>
+<!-- Approve Button - Value should be the string 'approved' -->
+<!-- Deny Button - Value should be the string 'denied'-->
 
 <!-- form post request goes to /whs-policies/:option - where option is the value of the button -->
 

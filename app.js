@@ -3,7 +3,6 @@ const app = express();
 const bodyParser = require('body-parser');
 const session = require('express-session');
 
-const policies = require('./policies');
 const api = require('./api');
 const user = require('./user');
 
@@ -13,6 +12,11 @@ app.set('view engine', 'ejs');
 
 app.use(session({secret: 'secret-token'}));
 
+<<<<<<< HEAD
+=======
+let allWorkers = [];
+let currentWorkers = [];
+>>>>>>> whs-policies-option
 let users = [];
 
 
@@ -32,7 +36,6 @@ app.get('/', async function(req, res){
     //move to user
 });
 
-
 app.get('/tutorial', (req, res) => res.render('tutorial'));
 
 app.get('/game', function(req, res){
@@ -48,31 +51,49 @@ app.get('/employee-folder', async function(req, res){
 });
 
 app.get('/whs-policies', async function(req, res){
-    // swap out with users[index].getRandomPolicy(); or if this doesn't work, something else.
-    let data = await users[req.session.userId].getRandPolicy();
-    req.session.currentData = data;
-    console.log(req.session.currentData);
-    res.render('whsPolicies', {data: data.policyText});
+    // if (users[req.session.userId].activePolicies > 0) {
+        let data = await users[req.session.userId].getRandPolicy();
+        req.session.currentPolicy = data;
+        console.log(req.session.currentPolicy);
+        res.render('whsPolicies', {data: data.policyText});
+    //} else {
+        // render empty whs policy page with back button.
+        // res.render('whsPolicies');
+
+    //}
 });
 
-app.get('/whs-policies/:option', function(req, res) {
-    // send to req ->>>
-    // whs Title
-    // option from front-end
-    // whs text
-    // whs consequence
-    // function for monthly-rapport to run
+app.post('/whs-policies/option', function(req, res) {
 
-    // let option = req.params.option;
-    /* if (option === 'approveOption') {
-            let approve = req.session.currentData.policyApproveOption;
-            req.session.
-       } else {
-            let deny = req.session.currentData.policyDenyOption;
-       }
-    //
-     */
-    res.redirect('/game');
+    let option;
+    if (req.body.approveOption) {
+        option = req.body.approveOption;
+    } else {
+        option = req.body.denyOption;
+    }
+
+    let outputArray = [];
+
+    if (option === 'Deny') {
+        outputArray.push({
+            policyTitle : req.session.currentPolicy.policyTitle,
+            policyText : req.session.currentPolicy.policyText,
+            policyDenyOption : req.session.currentPolicy.policyDenyOption,
+            policyDenyOptionFunction : req.session.currentPolicy.policyDenyOptionFunction
+        });
+    } else {
+        outputArray.push({
+            policyTitle : req.session.currentPolicy.policyTitle,
+            policyText : req.session.currentPolicy.policyText,
+            policyApproveOption : req.session.currentPolicy.policyApproveOption,
+            policyApproveOptionFunction : req.session.currentPolicy.policyApproveOptionFunction
+        });
+    }
+
+    req.session.toMonthlySummary = outputArray;
+    req.session.currentPolicy = undefined;
+
+    res.redirect('/game'); // send info on whether option was approved or not to display to user on game.
 });
 
 app.get('/monthly-rapport', function(req, res){
