@@ -3,8 +3,8 @@ const app = express();
 const bodyParser = require('body-parser');
 const session = require('express-session');
 
-const api = require('./api');
 const user = require('./user');
+// const api = require('./api');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('public'));
@@ -56,17 +56,27 @@ app.get('/employee-folder', async function(req, res){
 app.get('/whs-policies', async function(req, res){
     if(users[req.session.userId].getCurrentCycleTime() >= users[req.session.userId].getTotalCycleTime()){
         res.redirect('/monthly-rapport');
-    }else {
-        // if (users[req.session.userId].activePolicies > 0) {
-        let data = await users[req.session.userId].getRandPolicy();
-        req.session.currentPolicy = data;
-        console.log(req.session.currentPolicy);
-        res.render('whsPolicies', {data: data.policyText});
-        //} else {
-        // render empty whs policy page with back button.
-        // res.render('whsPolicies');
+    } else {
 
-        //}
+        /*let check = await users[req.session.userId].getPolicyDisplayed();
+        console.log(check);*/
+        let check = await users[req.session.userId].getActivePolicies();
+        if (check > 0) {
+            let check2 = await users[req.session.userId].getPolicyDisplayed();
+            if (check2) {
+                let data = req.session.currentPolicy;
+                res.render('whsPolicies', {data: data.policyText});
+            } else {
+                let data = await users[req.session.userId].getRandPolicy();
+                req.session.currentPolicy = data;
+                res.render('whsPolicies', {data: data.policyText});
+                await users[req.session.userId].setPolicyDisplayed(true);
+            }
+
+        } else {
+            // render empty whs policy page with back button.
+            res.render('whsPolicies', {data: 'There are currently no new policies.'});
+        }
     }
 });
 
@@ -98,6 +108,9 @@ app.get('/whs-policies/:option', function(req, res) {
     }
 
     req.session.toMonthlySummary = outputArray;
+    users[req.session.userId].setPolicyDisplayed(false);
+
+    // deleteFromAvailablePolcies
     req.session.currentPolicy = undefined;
 
     res.redirect('/game'); // send info on whether option was approved or not to display to user on game.
