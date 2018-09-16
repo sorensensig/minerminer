@@ -162,6 +162,19 @@ let makeExport = {
         workers[index].alive = false;
         return workers[index];
     },
+    getCurrentInjuredAndKilled: function(workers){
+        return new Promise(function (resolve, reject){
+            let outArray = [];
+            for(let i = 0; i < workers.length; i++){
+                if(workers[i].injured || !workers[i].alive){
+                    outArray.push(workers[i]);
+                }
+            }
+            resolve(outArray);
+
+        });
+
+    },
     printWorkers: function(workers){
         printTheseWorkers(workers);
     }

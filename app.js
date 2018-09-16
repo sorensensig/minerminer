@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 
 const user = require('./user');
-// const api = require('./api');
+const api = require('./api');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('public'));
@@ -97,7 +97,7 @@ app.get('/whs-policies/:option', function(req, res) {
             policyTitle : req.session.currentPolicy.policyTitle,
             policyText : req.session.currentPolicy.policyText,
             policyOption : req.session.currentPolicy.policyDenyOption,
-            policyOptionFunction : req.session.currentPolicy.policyDenyOptionFunction
+            policyOptionFunction : req.session.currentPolicy.policyDenyOptionFunction,
             policyChoice: "Denied"
         });
     } else {
@@ -105,7 +105,7 @@ app.get('/whs-policies/:option', function(req, res) {
             policyTitle : req.session.currentPolicy.policyTitle,
             policyText : req.session.currentPolicy.policyText,
             policyOption : req.session.currentPolicy.policyApproveOption,
-            policyOptionFunction : req.session.currentPolicy.policyApproveOptionFunction
+            policyOptionFunction : req.session.currentPolicy.policyApproveOptionFunction,
             policyChoice: "Approved"
         });
     }
@@ -119,7 +119,25 @@ app.get('/whs-policies/:option', function(req, res) {
 });
 
 app.get('/monthly-rapport', function(req, res){
-   res.render('monthlyRapport');
+    for(let i = 0; i < req.session.toMonthlySummary.length; i++){
+        switch (req.session.toMonthlySummary[i].policyOptionFunction){
+            case "Kill":
+                api.killWorker(users[req.session.userId].getAllWorkers(), users[req.session.userId].getCurrentWorkers());
+                console.log("Kill");
+                break;
+            case "Injure:":
+                api.injureWorker(users[req.session.userId].getAllWorkers(), users[req.session.userId].getCurrentWorkers());
+                console.log("Injure");
+                break;
+            case "Nothing":
+                console.log("Nothing");
+                break;
+        }
+    }
+
+    let affectedEmployees = api.getCurrentInjuredAndKilled(users[req.session.userId].getCurrentWorkers());
+
+   res.render('monthlyRapport', {toMonthlyReport: req.session.toMonthlySummary, affectedEmployees: affectedEmployees});
 });
 
 app.post('player-reset', function(req, res) {
