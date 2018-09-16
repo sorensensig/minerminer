@@ -20,6 +20,7 @@ app.get('/', async function(req, res){
         if(!req.session.userId) {
         users.push(new user());
         req.session.userId = users.length-1;
+        req.session.toMonthlySummary = [];
         res.render('home');
     } else {
         res.render('home');
@@ -95,19 +96,21 @@ app.get('/whs-policies/:option', function(req, res) {
         outputArray.push({
             policyTitle : req.session.currentPolicy.policyTitle,
             policyText : req.session.currentPolicy.policyText,
-            policyDenyOption : req.session.currentPolicy.policyDenyOption,
-            policyDenyOptionFunction : req.session.currentPolicy.policyDenyOptionFunction
+            policyOption : req.session.currentPolicy.policyDenyOption,
+            policyOptionFunction : req.session.currentPolicy.policyDenyOptionFunction
+            policyChoice: "Denied"
         });
     } else {
         outputArray.push({
             policyTitle : req.session.currentPolicy.policyTitle,
             policyText : req.session.currentPolicy.policyText,
-            policyApproveOption : req.session.currentPolicy.policyApproveOption,
-            policyApproveOptionFunction : req.session.currentPolicy.policyApproveOptionFunction
+            policyOption : req.session.currentPolicy.policyApproveOption,
+            policyOptionFunction : req.session.currentPolicy.policyApproveOptionFunction
+            policyChoice: "Approved"
         });
     }
 
-    req.session.toMonthlySummary = outputArray;
+    req.session.toMonthlySummary.push(outputArray[0]);
     users[req.session.userId].setPolicyDisplayed(false);
 
     // deleteFromAvailablePolcies
