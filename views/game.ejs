@@ -1,5 +1,5 @@
 <% include partials/header %>
-<!--<h1> Game Screen Page </h1>-->
+<% include partials/timer %>
 
 <div class="game-content">
     <div>
@@ -14,4 +14,11 @@
 
 <% include partials/footer %>
 
-<script> setInterval(function(){self.location.reload()},2000) </script>
+
+<script> setInterval(function(){self.location.reload()},5000) </script>
+
+<!-- Script to run timer -->
+<script>
+    let timer = $(".timer span").html();
+    setInterval(function(){ timer--; if(timer>=0) { $(".timer span").html(timer)}}, 1000);
+</script>

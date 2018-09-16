@@ -68,7 +68,8 @@ app.get('/game', function(req, res){
     if(users[req.session.userId].getCurrentCycleTime() >= users[req.session.userId].getTotalCycleTime()){
         res.redirect('/monthly-report');
     }else{
-        res.render('game');
+        let timer = users[req.session.userId].getCurrentCycleTime();
+        res.render('game', {timer: timer});
     }
     /* Start timer in user for time limit for cycle
     This timers also controls when WHS policies are available
@@ -83,7 +84,8 @@ app.get('/employee-folder', async function(req, res){
     if(users[req.session.userId].getCurrentCycleTime() >= users[req.session.userId].getTotalCycleTime()){
         res.redirect('/monthly-report');
     }else {
-        res.render('employeeFolder', {workers: users[req.session.userId].getCurrentWorkers()});
+        let timer = users[req.session.userId].getCurrentCycleTime();
+        res.render('employeeFolder', {workers: users[req.session.userId].getCurrentWorkers(), timer: timer});
     }
 });
 
@@ -104,19 +106,22 @@ app.get('/whs-policies', async function(req, res){
             */
             if (check2) {
                 let data = req.session.currentPolicy;
-                res.render('whsPolicies', {data: data.policyText, status: true});
+                let timer = users[req.session.userId].getCurrentCycleTime();
+                res.render('whsPolicies', {data: data.policyText, status: true, timer: timer});
              /* if there is no policy it creates one
              */
             } else {
                 let data = await users[req.session.userId].getRandPolicy();
+                let timer = users[req.session.userId].getCurrentCycleTime();
                 req.session.currentPolicy = data;
-                res.render('whsPolicies', {data: data.policyText, status: true});
+                res.render('whsPolicies', {data: data.policyText, status: true, timer: timer});
                 await users[req.session.userId].setPolicyDisplayed(true);
             }
         /* if there are no policies available it renders the following
         */
         } else {
-            res.render('whsPolicies', {data: 'There are currently no new policies.', status: false});
+            let timer = users[req.session.userId].getCurrentCycleTime();
+            res.render('whsPolicies', {data: 'There are currently no new policies.', status: false, timer: timer});
         }
     }
 });
