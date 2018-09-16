@@ -1,5 +1,26 @@
 <% include partials/header %>
-<h1> Monthly Rapport Page </h1>
+
+<div class="monthly-report">
+    <div id="policy-summary">
+        <% toMonthlyReport.forEach(function(index){ %>
+            <p><span>Policy Title: </span> <%= index.policyTitle %> </p>
+            <p><span>Policy Option: </span> <%= index.policyOption %> </p>
+            <p><span>Policy Choice: </span><%= index.policyChoice %> </p>
+            <hr>
+        <% }); %>
+    </div>
+    <div id="employee-summary">
+        <%= affectedEmployees[0] %>
+        <% affectedEmployees.forEach(function(index){ %>
+            <h3>Name: <span><%= index.name %> </span></h3>
+            <h3>Year of Incident: <span><%= index.year %> </span></h3>
+            <h3>Type of Incident: <span><%= index.type %> </span></h3>
+            <h3>Comment: <span><%= index.comment %> </span></h3>
+            <hr>
+        <% }); %>
+    </div>
+</div>
+
 <% include partials/footer %>
 
 <!--

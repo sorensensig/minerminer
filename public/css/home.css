@@ -90,3 +90,17 @@ h1 {
 
 .tutorial-content img {
   height: 100%; }
+
+.monthly-report {
+  height: 100vh;
+  background: url("../images/policy-folder.png") no-repeat;
+  background-size: auto 100%;
+  background-position: center; }
+
+.monthly-report #policy-summary {
+  float: left; }
+  .monthly-report #policy-summary span {
+    font-weight: bold; }
+
+.monthly-report #employee-summary {
+  float: right; }

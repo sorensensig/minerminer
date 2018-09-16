@@ -104,19 +104,19 @@ app.get('/whs-policies', async function(req, res){
             */
             if (check2) {
                 let data = req.session.currentPolicy;
-                res.render('whsPolicies', {data: data.policyText});
+                res.render('whsPolicies', {data: data.policyText, status: true});
              /* if there is no policy it creates one
              */
             } else {
                 let data = await users[req.session.userId].getRandPolicy();
                 req.session.currentPolicy = data;
-                res.render('whsPolicies', {data: data.policyText});
+                res.render('whsPolicies', {data: data.policyText, status: true});
                 await users[req.session.userId].setPolicyDisplayed(true);
             }
         /* if there are no policies available it renders the following
         */
         } else {
-            res.render('whsPolicies', {data: 'There are currently no new policies.'});
+            res.render('whsPolicies', {data: 'There are currently no new policies.', status: false});
         }
     }
 });

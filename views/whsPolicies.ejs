@@ -6,26 +6,17 @@
     </div>
 
     <div class="policy-details offset-xl-4">
-        <h1> WHS Policies Page </h1>
+        <h1> WHS Policies </h1>
 
         <p> <%= data %></p>
-
-        <!--<form action="/whs-policies/option" method="POST">-->
-            <!--<input type="submit" name="approveOption" value="Approve" id="approve">-->
-            <!--<input type="submit" name="denyOption" value="Deny" id="deny">-->
+        <% if(status) { %>
             <button id="approve">Approve</button>
             <button id="deny">Deny</button>
-        <!--</form>-->
-
+        <% } %>
         <div id="policy-decision">
-            <!--<img src="/images/sign.png">-->
+
         </div>
     </div>
-
-    <!-- Approve Button - Value should be the string 'approved' -->
-    <!-- Deny Button - Value should be the string 'denied'-->
-
-    <!-- form post request goes to /whs-policies/:option - where option is the value of the button -->
 </div>
 
 
@@ -42,7 +33,6 @@
         clearInterval(myTimer);
 
         setTimeout(function(){
-            // $.post( "/whs-policies/Approve", {});
             window.location = "/whs-policies/Approve";
         }, 2000);
     });
@@ -52,5 +42,9 @@
             'src': '/images/sign.png'
         }).appendTo('#policy-decision');
         clearInterval(myTimer);
+
+        setTimeout(function(){
+            window.location = "/whs-policies/Deny";
+        }, 2000);
     });
 </script>
