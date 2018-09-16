@@ -132,6 +132,9 @@ app.get('/monthly-rapport', function(req, res){
             case "Nothing":
                 console.log("Nothing");
                 break;
+            default:
+                console.log("Nothing");
+                break;
         }
     }
 
