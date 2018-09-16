@@ -32,7 +32,7 @@ function cycleTimer(){
             console.log("Time is up");
             clearInterval(timer);
         }
-        else if (currentCycleTime%5 === 0){
+        else if (currentCycleTime%20 === 0){
             activePolicies ++;
         }
 
