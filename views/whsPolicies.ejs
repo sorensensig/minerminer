@@ -29,9 +29,16 @@
 
 <% include partials/footer %>
 
+<!-- Script to add approve or deny image to policy -->
 <script>
     $("#approve").click(function() {
-        var img = $('<img />').attr({
+        $('<img />').attr({
+            'src': '/images/sign.png'
+        }).appendTo('#policy-decision');
+    });
+
+    $("#deny").click(function() {
+        $('<img />').attr({
             'src': '/images/sign.png'
         }).appendTo('#policy-decision');
     });
