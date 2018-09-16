@@ -1,8 +1,16 @@
 <% include partials/header %>
-<h1> Employee Folder </h1>
-<ul>
-    <% workers.forEach(function(index){ %>
-        <li> <%= index.name%> </li>
-    <% }); %>
-</ul>
+
+<div class="game-folder">
+    <div class="game-options row">
+        <a href="game"><img src="/images/back.png"></a>
+    </div>
+    <div id="employee-details" class="col-xl-5 offset-xl-7">
+        <h1> Employee Folder </h1>
+        <ul>
+            <% workers.forEach(function(index){ %>
+                <li> <%= index.name%> </li>
+            <% }); %>
+        </ul>
+    </div>
+</div>
 <% include partials/footer %>

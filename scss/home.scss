@@ -19,3 +19,102 @@ p {
 h1 {
   color: black;
 }
+
+// Home page
+.content {
+  //width: 50%;
+  //margin: 0 auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.content > img {
+  margin-top: -300px;
+}
+
+.content > div {
+  margin-top: 50px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.btn-primary {
+  background: goldenrod;
+  padding: 25px;
+  text-align: center;
+  font-size: 18px;
+  margin-top: 50px;
+}
+
+.btn-primary:hover {
+  text-decoration: none;
+}
+
+// Game page
+.game-content {
+  width:100%;
+  position: absolute;
+  bottom:0;
+  text-align: center;
+}
+.game-content > div {
+  display: inline-block;
+  //margin-bottom: -100px;
+}
+.game-content #game-table {
+  width: 100%;
+}
+
+.game-item img:hover {
+  transform: scale(1.1);
+}
+
+.game-disabled {
+  cursor: no-drop;
+}
+
+// Employee folder
+.game-folder {
+  height: 100vh;
+  background: url("../images/employee-folder.png");
+  background-size: 100%;
+}
+
+.game-folder #employee-details {
+  margin-top: 100px;
+}
+
+.game-folder .game-options {
+  width: 100%;
+}
+.game-folder .game-options > a {
+  margin-top: 50px;
+  margin-left: 50px;
+}
+
+// WHS policies
+.policy-folder {
+  height: 100vh;
+  background: url("../images/policy-folder.png") no-repeat;
+  background-size: auto 100%;
+  background-position: center;
+}
+
+.policy-folder .policy-details {
+  margin-top: 100px;
+}
+
+.policy-folder .game-options > a {
+  margin-top: 50px;
+  margin-left: 50px;
+}
+
+#policy-decision img {
+  position: absolute;
+  bottom: 15%;
+  left: 48%;
+}
