@@ -1,0 +1,6 @@
+1. Node.js (n.d) Node.js v6.14.4 Documentation. Retrieved from: https://nodejs.org/dist/latest-v6.x/docs/api/fs.html
+2. Node.js (n.d) Node.js v6.14.4 Documentation. Retrieved from: https://nodejs.org/dist/latest-v6.x/docs/api/fs.html
+3. w3schools.com (n.d.) JavaScript String replace() Method. Retrieved from:
+    https://www.w3schools.com/jsref/jsref_replace.asp
+4. Gamshan Vigneswaran (2017) JavaScript Deep copy for array and object. Retrieved from:
+    https://medium.com/@gamshan001/javascript-deep-copy-for-array-and-object-97e3d4bc401a

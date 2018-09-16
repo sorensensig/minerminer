@@ -101,7 +101,6 @@ app.get('/whs-policies', async function(req, res){
             }
         // if there are no policies available it renders the following
         } else {
-            // render empty whs policy page with back button.
             res.render('whsPolicies', {data: 'There are currently no new policies.'});
         }
     }
@@ -111,11 +110,6 @@ app.get('/whs-policies', async function(req, res){
 app.get('/whs-policies/:option', function(req, res) {
 
     let option = req.params.option;
-    // if (req.body.approveOption) {
-    //     option = req.body.approveOption;
-    // } else {
-    //     option = req.body.denyOption;
-    // }
 
     let outputArray = [];
 
@@ -169,33 +163,15 @@ app.get('/monthly-rapport', function(req, res){
 
     let affectedEmployees = api.getCurrentInjuredAndKilled(users[req.session.userId].getCurrentWorkers());
 
-   res.render('monthlyRapport', {toMonthlyReport: req.session.toMonthlySummary, affectedEmployees: affectedEmployees});
+    res.render('monthlyRapport', {toMonthlyReport: req.session.toMonthlySummary, affectedEmployees: affectedEmployees});
 });
 
-app.post('player-reset', function(req, res) {
-    // delete player object.
-    // NB we need to create a player object file first.
+app.get('player-reset', function(req, res) {
+    users[req.session.userId] = undefined;
+    req.session.currentPolicy = undefined;
+    req.session.toMonthlySummary = undefined;
+    req.session.userId = undefined;
     res.redirect('/');
 });
-
-// This here code is just a sample code to be used as reference when coding similar functions.
-// This code should not be a part of the final delivery.
-let friends = ['Al', 'Aslam', 'Thomas', 'Sigurd'];
-
-app.get('/friends', function(req, res){
-    res.render('friends', {friends: friends});
-});
-
-app.post('/addfriend', function(req, res){
-    friends.push(req.body.newfriend);
-    res.redirect('/friends');
-});
-
-app.get('/:number', function(req, res){
-    let number = req.params.number;
-    res.render('something', {variable: number});
-});
-// End sample code.
-
 
 app.listen(3000, () => console.log('Server listens to port 3000'));
