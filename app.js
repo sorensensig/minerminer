@@ -12,8 +12,6 @@ app.set('view engine', 'ejs');
 
 app.use(session({secret: 'secret-token'}));
 
-let allWorkers = [];
-let currentWorkers = [];
 let users = [];
 
 
@@ -36,28 +34,40 @@ app.get('/', async function(req, res){
 app.get('/tutorial', (req, res) => res.render('tutorial'));
 
 app.get('/game', function(req, res){
-    res.render('game');
-    console.log("Loady mc Loadface");
+
+    if(users[req.session.userId].getCurrentCycleTime() >= users[req.session.userId].getTotalCycleTime()){
+        res.redirect('/monthly-rapport');
+    }else{
+        res.render('game');
+    }
     // Start timer in user for time limit for cycle
     users[req.session.userId].startCycleTimer();
     // Start timer in user for WHS Policy spawn
 });
 
 app.get('/employee-folder', async function(req, res){
-   res.render('employeeFolder', {workers: users[req.session.userId].getCurrentWorkers()});
+    if(users[req.session.userId].getCurrentCycleTime() >= users[req.session.userId].getTotalCycleTime()){
+        res.redirect('/monthly-rapport');
+    }else {
+        res.render('employeeFolder', {workers: users[req.session.userId].getCurrentWorkers()});
+    }
 });
 
 app.get('/whs-policies', async function(req, res){
-    // if (users[req.session.userId].activePolicies > 0) {
+    if(users[req.session.userId].getCurrentCycleTime() >= users[req.session.userId].getTotalCycleTime()){
+        res.redirect('/monthly-rapport');
+    }else {
+        // if (users[req.session.userId].activePolicies > 0) {
         let data = await users[req.session.userId].getRandPolicy();
         req.session.currentPolicy = data;
         console.log(req.session.currentPolicy);
         res.render('whsPolicies', {data: data.policyText});
-    //} else {
+        //} else {
         // render empty whs policy page with back button.
         // res.render('whsPolicies');
 
-    //}
+        //}
+    }
 });
 
 app.post('/whs-policies/option', function(req, res) {

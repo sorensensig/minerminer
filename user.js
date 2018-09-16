@@ -78,6 +78,9 @@ module.exports = function() {
         },
         getCurrentCycleTime: function(){
             return currentCycleTime;
+        },
+        getTotalCycleTime: function(){
+            return CYCLETIME;
         }
     }
 };
