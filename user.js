@@ -77,6 +77,9 @@ module.exports = function() {
         setPolicyDisplayed: function(bool) {
             policyDisplayed = bool;
         },
+        setAvailablePolicies : function() {
+            availablePolicies = undefined;
+        },
         deleteFromAvailablePolicies: function removePolicy() {
             /* Removes used policies so that they won't appear again, and removes one from 'activePolicies' so that
             it does not display an endless loop of new policies.
@@ -111,6 +114,7 @@ module.exports = function() {
         },
         setCurrentCycleTime: function() {
             currentCycleTime = 0;
+            activeTimer = false;
         }
     }
 };
