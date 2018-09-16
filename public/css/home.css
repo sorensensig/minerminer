@@ -72,9 +72,10 @@ h1 {
   background: url("../images/policy-folder.png") no-repeat;
   background-size: auto 100%;
   background-position: center; }
-
-.policy-folder .policy-details {
-  margin-top: 100px; }
+  .policy-folder .policy-details {
+    margin-top: 100px; }
+    .policy-folder .policy-details p {
+      width: 50%; }
 
 .policy-folder .game-options > a {
   margin-top: 50px;
@@ -96,11 +97,13 @@ h1 {
   background: url("../images/policy-folder.png") no-repeat;
   background-size: auto 100%;
   background-position: center; }
-
-.monthly-report #policy-summary {
-  float: left; }
-  .monthly-report #policy-summary span {
+  .monthly-report h3 {
+    text-align: center; }
+  .monthly-report #policy-summary {
+    top: 15%; }
+  .monthly-report #employee-summary {
+    top: 15%; }
+  .monthly-report #policy-summary span, .monthly-report #employee-summary span {
     font-weight: bold; }
-
-.monthly-report #employee-summary {
-  float: right; }
+  .monthly-report #resetDiv {
+    margin-top: 20%; }
