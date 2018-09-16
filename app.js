@@ -66,7 +66,7 @@ app.get('/game', function(req, res){
     When this page loads and global timer has run out, the player is redirected to monthly report.
     */
     if(users[req.session.userId].getCurrentCycleTime() >= users[req.session.userId].getTotalCycleTime()){
-        res.redirect('/monthly-rapport');
+        res.redirect('/monthly-report');
     }else{
         res.render('game');
     }
@@ -81,7 +81,7 @@ app.get('/employee-folder', async function(req, res){
     When this page loads and the global timer has run out, the player is redirected to monthly report.
     */
     if(users[req.session.userId].getCurrentCycleTime() >= users[req.session.userId].getTotalCycleTime()){
-        res.redirect('/monthly-rapport');
+        res.redirect('/monthly-report');
     }else {
         res.render('employeeFolder', {workers: users[req.session.userId].getCurrentWorkers()});
     }
@@ -92,7 +92,7 @@ app.get('/whs-policies', async function(req, res){
     When this page loads and the global timer has run out, the player is redirected to monthly report.
     */
     if(users[req.session.userId].getCurrentCycleTime() >= users[req.session.userId].getTotalCycleTime()){
-        res.redirect('/monthly-rapport');
+        res.redirect('/monthly-report');
     } else {
 
         let check = await users[req.session.userId].getActivePolicies();
@@ -155,7 +155,7 @@ app.get('/whs-policies/:option', function(req, res) {
     res.redirect('/game');
 });
 
-app.get('/monthly-rapport', async function(req, res){
+app.get('/monthly-report', async function(req, res){
     /* Iterates though all decisions made by player, starts appropriate functions
     then is sends all decisions and the affected employees to result page
     */
@@ -181,7 +181,7 @@ app.get('/monthly-rapport', async function(req, res){
     let affectedEmployees = await api.getCurrentInjuredAndKilled(users[req.session.userId].getCurrentWorkers());
     console.log(affectedEmployees);
 
-    res.render('monthlyRapport', {toMonthlyReport: req.session.toMonthlySummary, affectedEmployees: affectedEmployees});
+    res.render('monthlyReport', {toMonthlyReport: req.session.toMonthlySummary, affectedEmployees: affectedEmployees});
 });
 
 app.get('/player-reset', function(req, res) {
