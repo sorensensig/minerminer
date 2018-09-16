@@ -90,7 +90,8 @@ h1 {
   width: 100vh; }
 
 .tutorial-content img {
-  height: 100%; }
+  width: 100vw;
+  height: 100vh; }
 
 .monthly-report {
   height: 100vh;
@@ -107,3 +108,9 @@ h1 {
     font-weight: bold; }
   .monthly-report #resetDiv {
     margin-top: 20%; }
+
+.timer {
+  position: absolute;
+  width: 100px;
+  padding: 10px;
+  font-size: 32px; }

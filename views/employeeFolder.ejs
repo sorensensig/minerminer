@@ -1,4 +1,5 @@
 <% include partials/header %>
+<% include partials/timer %>
 
 <div class="game-folder">
     <div class="game-options row">
@@ -16,4 +17,13 @@
 <% include partials/footer %>
 
 
-<script> setInterval(function(){self.location.reload()},2000) </script>
+<script> setInterval(function(){self.location.reload()},5000) </script>
+
+<!-- Script to run timer -->
+<script>
+    let timeElem = $(".timer span");
+    timeElem.css("color", "white");
+
+    let timer = timeElem.html();
+    setInterval(function(){ timer--; if(timer>=0) { timeElem.html(timer)}}, 1000);
+</script>

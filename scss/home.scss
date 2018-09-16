@@ -129,7 +129,8 @@ h1 {
 }
 
 .tutorial-content img {
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
 }
 
 // Monthly report
@@ -157,4 +158,12 @@ h1 {
   #resetDiv {
     margin-top: 20%;
   }
+}
+
+// Timer for the game
+.timer {
+  position: absolute;
+  width: 100px;
+  padding: 10px;
+  font-size: 32px;
 }

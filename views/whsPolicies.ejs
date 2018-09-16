@@ -1,4 +1,5 @@
 <% include partials/header %>
+<% include partials/timer %>
 
 <div class="policy-folder">
     <div class="game-options row">
@@ -24,7 +25,7 @@
 
 <!-- Script to add approve or deny image to policy -->
 <script>
-    let myTimer = setInterval(function(){self.location.reload()},2000);
+    let myTimer = setInterval(function(){self.location.reload()},5000);
 
     $("#approve").click(function() {
         $('<img />').attr({
@@ -47,4 +48,8 @@
             window.location = "/whs-policies/Deny";
         }, 2000);
     });
+
+    <!-- Script to run timer -->
+    let timer = $(".timer span").html();
+    setInterval(function(){ timer--; if(timer>=0) { $(".timer span").html(timer)}}, 1000);
 </script>
