@@ -112,8 +112,7 @@ app.get('/whs-policies/:option', function(req, res) {
 
     req.session.toMonthlySummary.push(outputArray[0]);
     users[req.session.userId].setPolicyDisplayed(false);
-
-    // deleteFromAvailablePolcies
+    users[req.session.userId].deleteFromAvailablePolicies();
     req.session.currentPolicy = undefined;
 
     res.redirect('/game'); // send info on whether option was approved or not to display to user on game.
