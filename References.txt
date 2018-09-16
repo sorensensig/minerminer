@@ -1,6 +1,23 @@
+--------------------
+LOCAL USE REFERENCES
+--------------------
 1. Node.js (n.d) Node.js v6.14.4 Documentation. Retrieved from: https://nodejs.org/dist/latest-v6.x/docs/api/fs.html
 2. Node.js (n.d) Node.js v6.14.4 Documentation. Retrieved from: https://nodejs.org/dist/latest-v6.x/docs/api/fs.html
 3. w3schools.com (n.d.) JavaScript String replace() Method. Retrieved from:
     https://www.w3schools.com/jsref/jsref_replace.asp
 4. Gamshan Vigneswaran (2017) JavaScript Deep copy for array and object. Retrieved from:
     https://medium.com/@gamshan001/javascript-deep-copy-for-array-and-object-97e3d4bc401a
+5. Australian Government (2014) State Library of Queensland - Queensland Mining accidents 1882-1945. Retrieved from:
+    https://search.data.gov.au/dataset/ds-qld-2e5b65d7-09d5-403f-a5d5-a552410f2d5d/details?q=slq
+
+---------------------
+GLOBAL USE REFERENCES
+---------------------
+1. Bootstrap (n.d) Introduction. Retrieved from:
+    https://getbootstrap.com/docs/4.1/getting-started/introduction/
+The source below is a tutorial on how to use the async, await and promise functions that have been used across many of
+the code files in this project.
+2. Aman Kharbanda (2017) Using Async and Await In Node.Js. Retrieved from: https://www.youtube.com/watch?v=dgdcXGxh93s
+3. npm (2018) Express. Retrieved from: https://www.npmjs.com/package/express
+4. npm (2018) body-parser. Retrieved from: https://www.npmjs.com/package/body-parser
+5. npm (2017) express-session Retrieved from: https://www.npmjs.com/package/express-session
