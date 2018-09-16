@@ -155,7 +155,7 @@ app.get('/whs-policies/:option', function(req, res) {
     res.redirect('/game');
 });
 
-app.get('/monthly-rapport', function(req, res){
+app.get('/monthly-rapport', async function(req, res){
     /* Iterates though all decisions made by player, starts appropriate functions
     then is sends all decisions and the affected employees to result page
     */
@@ -178,7 +178,8 @@ app.get('/monthly-rapport', function(req, res){
         }
     }
 
-    let affectedEmployees = api.getCurrentInjuredAndKilled(users[req.session.userId].getCurrentWorkers());
+    let affectedEmployees = await api.getCurrentInjuredAndKilled(users[req.session.userId].getCurrentWorkers());
+    console.log(affectedEmployees);
 
     res.render('monthlyRapport', {toMonthlyReport: req.session.toMonthlySummary, affectedEmployees: affectedEmployees});
 });
