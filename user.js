@@ -5,6 +5,8 @@ const CYCLETIME = 30;
 let availablePolicies;
 let usedPolicies = [];
 let activePolicies = 0;
+let policyDisplayed = false;
+let currentPolicyIndex;
 
 let currentCycleTime = 0;
 let activeTimer = false;
@@ -17,11 +19,6 @@ function getRandNum() {
     return new Promise(async function(resolve, reject) {
         resolve(Math.floor((Math.random() * availablePolicies.length)));
     });
-}
-
-function removePolicy(policyIndex) {
-    usedPolicies.push(availablePolicies[policyIndex]);
-    availablePolicies.splice(policyIndex, 1);
 }
 
 function cycleTimer(){
@@ -38,7 +35,7 @@ function cycleTimer(){
         else if (currentCycleTime%5 === 0){
             activePolicies ++;
         }
-        console.log(currentCycleTime);
+
 
      },1000 );
 }
@@ -48,16 +45,35 @@ module.exports = function() {
         getRandPolicy : function() {
             return new Promise(async function(resolve, reject) {
                 if (availablePolicies !== undefined) {
-                    let index = await getRandNum();
-                    resolve(availablePolicies[index]);
+                    currentPolicyIndex = await getRandNum();
+                    resolve(availablePolicies[currentPolicyIndex]);
                 } else {
                     // https://medium.com/@gamshan001/javascript-deep-copy-for-array-and-object-97e3d4bc401a
                     let unParsed = await policies.getPolicies();
                     availablePolicies =  JSON.parse(JSON.stringify(unParsed));
-                    let index = await getRandNum();
-                    resolve(availablePolicies[index]);
+                    currentPolicyIndex = await getRandNum();
+                    resolve(availablePolicies[currentPolicyIndex]);
                 }
             });
+        },
+        getActivePolicies: function() {
+            return new Promise(function(resolve, reject) {
+                resolve(activePolicies);
+            });
+        },
+        getPolicyDisplayed: function() {
+            return new Promise(function(resolve, reject) {
+                resolve(policyDisplayed);
+            });
+        },
+        setPolicyDisplayed: function(bool) {
+            policyDisplayed = bool;
+        },
+        deleteFromAvailablePolcies: function removePolicy() {
+            let policyIndex = currentPolicyIndex;
+            usedPolicies.push(availablePolicies[policyIndex]);
+            availablePolicies.splice(policyIndex, 1);
+            activePolicies --;
         },
         getAllWorkers: function(){
             return allWorkers;
