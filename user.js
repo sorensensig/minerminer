@@ -69,7 +69,7 @@ module.exports = function() {
         setPolicyDisplayed: function(bool) {
             policyDisplayed = bool;
         },
-        deleteFromAvailablePolcies: function removePolicy() {
+        deleteFromAvailablePolicies: function removePolicy() {
             let policyIndex = currentPolicyIndex;
             usedPolicies.push(availablePolicies[policyIndex]);
             availablePolicies.splice(policyIndex, 1);
