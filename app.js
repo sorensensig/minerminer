@@ -45,6 +45,7 @@ app.get('/', async function(req, res){
     if(!req.session.userId) {
         users.push(new user());
         req.session.userId = users.length-1;
+        users[req.session.userId].setCurrentCycleTime();
         req.session.toMonthlySummary = [];
         res.render('home');
     } else {
@@ -182,7 +183,7 @@ app.get('/monthly-rapport', function(req, res){
     res.render('monthlyRapport', {toMonthlyReport: req.session.toMonthlySummary, affectedEmployees: affectedEmployees});
 });
 
-app.get('player-reset', function(req, res) {
+app.get('/player-reset', function(req, res) {
     /* Resets the game for the player.
     */
     users[req.session.userId] = undefined;
