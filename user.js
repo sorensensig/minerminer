@@ -1,6 +1,6 @@
 const policies = require('./policies');
 const api = require('./api');
-const CYCLETIME = 30;
+const CYCLETIME = 300;
 
 let availablePolicies;
 let usedPolicies = [];

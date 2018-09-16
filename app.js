@@ -70,14 +70,14 @@ app.get('/whs-policies', async function(req, res){
     }
 });
 
-app.post('/whs-policies/option', function(req, res) {
+app.get('/whs-policies/:option', function(req, res) {
 
-    let option;
-    if (req.body.approveOption) {
-        option = req.body.approveOption;
-    } else {
-        option = req.body.denyOption;
-    }
+    let option = req.params.option;
+    // if (req.body.approveOption) {
+    //     option = req.body.approveOption;
+    // } else {
+    //     option = req.body.denyOption;
+    // }
 
     let outputArray = [];
 

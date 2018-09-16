@@ -10,10 +10,12 @@
 
         <p> <%= data %></p>
 
-        <form action="/whs-policies/option" method="POST">
-            <input type="submit" name="approveOption" value="Approve" id="approve">
-            <input type="submit" name="denyOption" value="Deny" id="deny">
-        </form>
+        <!--<form action="/whs-policies/option" method="POST">-->
+            <!--<input type="submit" name="approveOption" value="Approve" id="approve">-->
+            <!--<input type="submit" name="denyOption" value="Deny" id="deny">-->
+            <button id="approve">Approve</button>
+            <button id="deny">Deny</button>
+        <!--</form>-->
 
         <div id="policy-decision">
             <!--<img src="/images/sign.png">-->
@@ -31,19 +33,24 @@
 
 <!-- Script to add approve or deny image to policy -->
 <script>
+    let myTimer = setInterval(function(){self.location.reload()},2000);
+
     $("#approve").click(function() {
         $('<img />').attr({
             'src': '/images/sign.png'
         }).appendTo('#policy-decision');
+        clearInterval(myTimer);
+
+        setTimeout(function(){
+            // $.post( "/whs-policies/Approve", {});
+            window.location = "/whs-policies/Approve";
+        }, 2000);
     });
 
     $("#deny").click(function() {
         $('<img />').attr({
             'src': '/images/sign.png'
         }).appendTo('#policy-decision');
+        clearInterval(myTimer);
     });
 </script>
-<% include partials/footer %>
-
-
-<script> setInterval(function(){self.location.reload()},2000) </script>
