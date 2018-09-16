@@ -1,3 +1,5 @@
+const request = require('request');
+
 function makeAllWorkers(allWorkers){
     /* Retrieves information from API, considers if it is valid information (defined by us) and makes it available for later use
     */
