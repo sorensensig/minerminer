@@ -4,7 +4,7 @@ const CYCLETIME = 120;
 
 let availablePolicies;
 let usedPolicies = [];
-let activePolicies = 0;
+let activePolicies = 1;
 let policyDisplayed = false;
 let currentPolicyIndex;
 

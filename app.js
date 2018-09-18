@@ -61,7 +61,7 @@ app.get('/tutorial', (req, res) => res.render('tutorial'));
 /* Renders tutorial page
 */
 
-app.get('/game', function(req, res){
+app.get('/game', async function(req, res){
     /* Starts the game and renders game page
     When this page loads and global timer has run out, the player is redirected to monthly report.
     */
@@ -69,7 +69,7 @@ app.get('/game', function(req, res){
         res.redirect('/monthly-report');
     }else{
         let timer = users[req.session.userId].getCurrentCycleTime();
-        res.render('game', {timer: timer});
+        res.render('game', {timer: timer, policyNumber: await users[req.session.userId].getActivePolicies()});
     }
     /* Start timer in user for time limit for cycle
     This timers also controls when WHS policies are available

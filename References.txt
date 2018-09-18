@@ -21,3 +21,13 @@ the code files in this project.
 3. npm (2018) Express. Retrieved from: https://www.npmjs.com/package/express
 4. npm (2018) body-parser. Retrieved from: https://www.npmjs.com/package/body-parser
 5. npm (2017) express-session Retrieved from: https://www.npmjs.com/package/express-session
+6. npm (2018) ejs. Retrieved from: https://www.npmjs.com/package/ejs
+7. npm (2018) node-sass. Retrieved from: https://www.npmjs.com/package/node-sass?activeTab=versions
+8. npm (2018) nodemon. Retrieved from: https://www.npmjs.com/package/nodemon
+
+
+---------------------
+ART
+---------------------
+1. Freepik (2013) Hexagon geometrical shape outline free icon. Retrieved from:
+    https://www.flaticon.com/free-icon/hexagon-geometrical-shape-outline_32425#term=hexagon&page=1&position=3

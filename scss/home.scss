@@ -3,13 +3,11 @@
 
 // run the following command in the terminal: npm run watch-css
 
-// SOURCE
-// https://medium.com/@brianhan/watch-compile-your-sass-with-npm-9ba2b878415b
 
-$badass: #bada55;
+$background-all: #bada55;
 body {
   margin: 0;
-  background-color: $badass;
+  background-color: $background-all;
 }
 
 p {
