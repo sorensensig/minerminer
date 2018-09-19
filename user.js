@@ -1,6 +1,6 @@
 const policies = require('./policies');
 const api = require('./api');
-const CYCLETIME = 120;
+const CYCLETIME = 60;
 
 let availablePolicies;
 let usedPolicies = [];
@@ -33,7 +33,7 @@ function cycleTimer(){
         if (currentCycleTime >= CYCLETIME){
             clearInterval(timer);
         }
-        else if (currentCycleTime%30 === 0){
+        else if (currentCycleTime%20 === 0){
             activePolicies ++;
         }
      },1000 );
