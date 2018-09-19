@@ -193,6 +193,7 @@ app.get('/player-reset', function(req, res) {
     /* Resets the game for the player.
     */
     users[req.session.userId].setAvailablePolicies();
+    users[req.session.userId].setActivePolicies();
     users[req.session.userId] = undefined;
     req.session.currentPolicy = undefined;
     req.session.toMonthlySummary = undefined;

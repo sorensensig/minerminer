@@ -80,6 +80,9 @@ module.exports = function() {
         setAvailablePolicies : function() {
             availablePolicies = undefined;
         },
+        setActivePolicies: function(){
+            activePolicies = 1;
+        },
         deleteFromAvailablePolicies: function removePolicy() {
             /* Removes used policies so that they won't appear again, and removes one from 'activePolicies' so that
             it does not display an endless loop of new policies.
