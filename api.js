@@ -89,15 +89,15 @@ function makeCurrentWorkers(allWorkers, currentWorkers){
     Ensures that there are an equal amount of people that can be injured and can die
     */
     let amountOfHires = 10;
-    let fatal = 5;
-    let injured = 5;
+    let fatal = 10;
+    let injured = -1;
     let counter = 0;
 
     return new Promise(function(resolve, reject){
         while (amountOfHires > 0 && counter < allWorkers.length){
             /* if the injury type is killed or fatal it is considered as a person that can be killed
             */
-            if (fatal > 0 && (allWorkers[counter].type === "Killed" || allWorkers[counter].type === "Fatal")){
+            if (fatal >= 0 && (allWorkers[counter].type === "Killed" || allWorkers[counter].type === "Fatal")){
                 fatal --;
                 amountOfHires --;
                 allWorkers[counter].employed = true;

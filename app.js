@@ -66,7 +66,7 @@ app.get('/game', async function(req, res){
     When this page loads and global timer has run out, the player is redirected to monthly report.
     */
     if(users[req.session.userId].getCurrentCycleTime() >= users[req.session.userId].getTotalCycleTime()){
-        res.redirect('/monthly-report');
+            res.redirect('/monthly-report');
     }else{
         let timer = users[req.session.userId].getCurrentCycleTime();
         res.render('game', {timer: timer, policyNumber: await users[req.session.userId].getActivePolicies()});
@@ -111,7 +111,20 @@ app.get('/whs-policies', async function(req, res){
              /* if there is no policy it creates one
              */
             } else {
-                let data = await users[req.session.userId].getRandPolicy();
+                // CHECK IF CURRENT EMPLOYEES ARE EITHER [KILLABLE, INJURABLE, OR NONE]
+                let canBeKilled = false,
+                    canBeInjured = false,
+                    currentWorkers = users[req.session.userId].getCurrentWorkers();
+
+                for(let worker of currentWorkers) {
+                    if(worker.type === 'Injured') {
+                        canBeInjured = true;
+                    } else if(worker.type === 'Killed' || worker.type === 'Fatal') {
+                        canBeKilled = true;
+                    }
+                }
+
+                let data = await users[req.session.userId].getRandPolicy(canBeKilled, canBeInjured);
                 let timer = users[req.session.userId].getCurrentCycleTime();
                 req.session.currentPolicy = data;
                 res.render('whsPolicies', {data: data.policyText, status: true, timer: timer});
