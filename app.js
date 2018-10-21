@@ -85,7 +85,13 @@ app.get('/employee-folder', async function(req, res){
         res.redirect('/monthly-report');
     }else {
         let timer = users[req.session.userId].getCurrentCycleTime();
-        res.render('employeeFolder', {workers: users[req.session.userId].getCurrentWorkers(), timer: timer});
+        let possibleHires = await api.getPossibleHires(users[req.session.userId].getAllWorkers());
+        users[req.session.userId].setPossibleHires(possibleHires);
+        res.render('employeeFolder', {workers: users[req.session.userId].getCurrentWorkers(),
+            workersInjured: users[req.session.userId].getCurrentInjuredWorkers(),
+            workersKilled: users[req.session.userId].getCurrentKilledWorkers(),
+            possibleHires: possibleHires,
+            timer: timer});
     }
 });
 
@@ -180,11 +186,11 @@ app.get('/monthly-report', async function(req, res){
     for(let i = 0; i < req.session.toMonthlySummary.length; i++){
         switch (req.session.toMonthlySummary[i].policyOptionFunction){
             case "Kill":
-                api.killWorker(users[req.session.userId].getAllWorkers(), users[req.session.userId].getCurrentWorkers());
+                api.killWorker(users[req.session.userId].getAllWorkers(), users[req.session.userId].getCurrentWorkers(), users[req.session.userId].getCurrentKilledWorkers());
                 console.log("Kill");
                 break;
             case "Injure:":
-                api.injureWorker(users[req.session.userId].getAllWorkers(), users[req.session.userId].getCurrentWorkers());
+                api.injureWorker(users[req.session.userId].getAllWorkers(), users[req.session.userId].getCurrentWorkers(), users[req.session.userId].getCurrentInjuredWorkers());
                 console.log("Injure");
                 break;
             case "Nothing":
@@ -197,7 +203,6 @@ app.get('/monthly-report', async function(req, res){
     }
 
     let affectedEmployees = await api.getCurrentInjuredAndKilled(users[req.session.userId].getCurrentWorkers());
-    console.log(affectedEmployees);
 
     res.render('monthlyReport', {toMonthlyReport: req.session.toMonthlySummary, affectedEmployees: affectedEmployees});
 });
@@ -212,6 +217,36 @@ app.get('/player-reset', function(req, res) {
     req.session.toMonthlySummary = undefined;
     req.session.userId = undefined;
     res.redirect('/');
+});
+
+app.get('/continue', function(req, res) {
+    /* Resets the game for the player.
+    */
+    users[req.session.userId].setAvailablePolicies();
+    users[req.session.userId].setActivePolicies();
+    users[req.session.userId].setCurrentCycleTime();
+    res.redirect('/game');
+});
+
+app.get('/fireWorker/:index', function(req, res) {
+    /* Resets the game for the player.
+    */
+    api.fireWorker(users[req.session.userId].getAllWorkers(),
+        users[req.session.userId].getCurrentWorkers(),
+        req.params.index);
+
+    res.redirect('/employee-folder');
+});
+
+app.get('/hireWorker/:index', function(req, res) {
+    /* Resets the game for the player.
+    */
+    api.hireWorker(users[req.session.userId].getAllWorkers(),
+        users[req.session.userId].getCurrentWorkers(),
+        users[req.session.userId].getPossibleHires(),
+        req.params.index);
+
+    res.redirect('/employee-folder');
 });
 
 app.listen(process.env.PORT ||3000, () => console.log('Server listens to port 3000'));
