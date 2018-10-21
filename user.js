@@ -13,6 +13,9 @@ let activeTimer = false;
 
 let allWorkers = [];
 let currentWorkers = [];
+let currentInjuredWorkers = [];
+let currentKilledWorkers = [];
+let possibleHires = [];
 
 
 function getRandNum() {
@@ -98,6 +101,15 @@ module.exports = function() {
         getCurrentWorkers: function(){
             return currentWorkers;
         },
+        getCurrentInjuredWorkers: function(){
+            return currentInjuredWorkers;
+        },
+        getCurrentKilledWorkers: function(){
+            return currentKilledWorkers;
+        },
+        getPossibleHires: function(){
+            return possibleHires;
+        },
         setAllWorkers: async function(){
             allWorkers = await api.getAllWorkers(allWorkers);
         },
@@ -118,6 +130,9 @@ module.exports = function() {
         setCurrentCycleTime: function() {
             currentCycleTime = 0;
             activeTimer = false;
+        },
+        setPossibleHires: function(workers){
+            possibleHires = workers;
         }
     }
 };

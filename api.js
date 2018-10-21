@@ -183,23 +183,32 @@ let makeExport = {
         allWorkers[allIndex].employed = false;
         workers.splice(index, 1);
     },
-    injureWorker: function(allWorkers, workers){
+    hireWorker: function(allWorkers, workers, possibleHires, index){
+        /* Fires a worker (currently not used)
+        */
+        let allIndex = findAllWorkerIndex(allWorkers, possibleHires, index);
+        allWorkers[allIndex].employed = true;
+        workers.push(possibleHires[index]);
+    },
+    injureWorker: function(allWorkers, workers, injured){
         /* Injures a worker
         */
         let index = findType(workers, "Injured", "Injured");
         let allIndex = findAllWorkerIndex(allWorkers, workers, index);
         allWorkers[allIndex].injured = true;
         workers[index].injured = true;
-        return workers[index];
+        injured.push(injured.splice(index, 1));
+        return injured[-1];
     },
-    killWorker: function(allWorkers, workers){
+    killWorker: function(allWorkers, workers, killed){
         /* Kills a worker
         */
         let index  = findType(workers, "Killed", "Fatal");
         let allIndex = findAllWorkerIndex(allWorkers, workers, index);
         allWorkers[allIndex].alive = false;
         workers[index].alive = false;
-        return workers[index];
+        killed.push(workers.splice(index, 1));
+        return killed[-1];
     },
     getCurrentInjuredAndKilled: function(workers){
         /* Retrieves all workers that either have been killed or injured
@@ -215,6 +224,22 @@ let makeExport = {
 
         });
 
+    },
+    getPossibleHires: async function(allWorkers){
+        return new Promise(function(resolve, reject){
+            let possibleHires = [];
+            let amountOfHires = 10;
+            let counter = 0;
+
+            while (amountOfHires > 0 && counter < allWorkers.length){
+                if(!allWorkers[counter].employed){
+                    possibleHires.push(allWorkers[counter]);
+                    amountOfHires--;
+                }
+                counter++;
+            }
+            resolve(possibleHires);
+        });
     },
     printWorkers: function(workers){
         /* prints all workers in array (only used during testing)
