@@ -10,7 +10,8 @@ End code snippet (1. fs)
 const filePath = ['./policyInfoKill.txt', './policyInfoInjure.txt', './policyInfoNothing.txt'];
 
 function Policy(policyNumber, policyTitle, policyText, policyDenyOption, policyApproveOption, policyDenyOptionFunction,
-                policyApproveOptionFunction, policyDenyHint, policyApproveHint){
+                policyApproveOptionFunction, policyDenyHint, policyApproveHint, shortTermDenyEffect, longTermDenyEffect,
+                shortTermApproveEffect, longTermApproveEffect){
     /* Constructor for the 'Policy' object.
     */
     this.policyNumber = policyNumber;
@@ -22,6 +23,10 @@ function Policy(policyNumber, policyTitle, policyText, policyDenyOption, policyA
     this.policyApproveOptionFunction = policyApproveOptionFunction;
     this.policyDenyHint = policyDenyHint;
     this.policyApproveHint = policyApproveHint;
+    this.shortTermDenyEffect = shortTermDenyEffect;
+    this.longTermDenyEffect = longTermDenyEffect;
+    this.shortTermApproveEffect = shortTermApproveEffect;
+    this.longTermApproveEffect = longTermApproveEffect;
 }
 
 let allKillPolicies = [],
@@ -58,7 +63,8 @@ function createPolicies(array, path) {
 
             for (let i = 0; i < objectsAsStringArray.length; i++) {
                 let toObject = objectsAsStringArray[i].split(' ~ ');
-                array[i] = new Policy(i, toObject[0], toObject[1], toObject[2], toObject[3], toObject[4], toObject[5], toObject[6], toObject[7]);
+                array[i] = new Policy(i, toObject[0], toObject[1], toObject[2], toObject[3], toObject[4], toObject[5],
+                    toObject[6], toObject[7], toObject[8], toObject[9], toObject[10], toObject[11]);
             }
             resolve(array);
         });

@@ -143,6 +143,12 @@ app.get('/whs-policies/:option', function(req, res) {
     /* this function takes the players choice from the policy page, stores it and then redirects the player to game screen
     */
 
+    // REMEMBER TO USE THE POLICY LONG TERM AND SHORT TERM EFFECTS FROM APPROVE AND DENY HERE.
+    // shortTermDenyEffect
+    // longTermDenyEffect
+    // shortTermApproveEffect
+    // longTermApproveEffect
+
     let option = req.params.option;
 
     let outputArray = [];
