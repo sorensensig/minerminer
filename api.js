@@ -9,7 +9,8 @@ function makeAllWorkers(allWorkers){
         https://search.data.gov.au/dataset/ds-qld-2e5b65d7-09d5-403f-a5d5-a552410f2d5d/details?q=slq
         The code snippet is an API and appears in its original form except for the limit.
         */
-        URL = "https://data.gov.au/api/3/action/datastore_search?resource_id=63fd8050-0bab-4c04-b837-b2ce664077bf&limit=5000";
+        URL = "https://data.gov.au/api/3/action/datastore_search_sql?sql=SELECT%20*%20from%20%2263fd8050-0bab-4c04-b837-b2ce664077bf%22%20WHERE%20%22Remarks%22%20LIKE%20%27%.%.%.%27AND%20%22Name%22%20LIKE%20%27%,%20%%27"
+        //URL = "https://data.gov.au/api/3/action/datastore_search?resource_id=63fd8050-0bab-4c04-b837-b2ce664077bf&limit=5000";
         /*
         End code snippet (5. State Library of Queensland - Queensland Mining accidents 1882-1945)
         */
@@ -73,20 +74,18 @@ function makeAllWorkers(allWorkers){
     });
 }
 
-function getWorkers(allWorkers){
+async function getWorkers(allWorkers){
     /* returns all workers, if there are no workers in array retrieves workers from API
     */
-    return new Promise(async function(resolve, reject){
-        if(allWorkers.length === 0){
-            allWorkers = await makeAllWorkers(allWorkers);
-        }
+    if(allWorkers.length === 0){
+        allWorkers = await makeAllWorkers(allWorkers);
+    }
 
-        console.log("Randomizing");
-        allWorkers = await randomize(allWorkers);
-        console.log("Randomized");
+    console.log("Randomizing");
+    allWorkers = await randomize(allWorkers);
+    console.log("Randomized");
 
-        resolve(allWorkers);
-    });
+    return allWorkers;
 }
 
 async function makeCurrentWorkers(allWorkers, currentWorkers){
@@ -154,13 +153,17 @@ function findType(workers, type, type2){
 }
 
 async function randomize(array){
-    let randomArrayHolder = [];
 
-    while(array.length > 0){
-        randomArrayHolder.push(array.splice(Math.round(Math.random()*(array.length-1)), 1));
-    }
+    return new Promise(function(resolve, reject)
+    {
+        let randomArrayHolder = [];
 
-    return randomArrayHolder;
+        while (array.length > 0) {
+            let randomWorker = array.splice(Math.round(Math.random() * (array.length - 1)), 1)
+            randomArrayHolder.push(randomWorker[0]);
+        }
+        resolve(randomArrayHolder);
+    });
 
 }
 
