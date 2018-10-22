@@ -220,7 +220,7 @@ app.get('/player-reset', function(req, res) {
     users[req.session.userId].setActivePolicies();
     users[req.session.userId] = undefined;
     req.session.currentPolicy = undefined;
-    req.session.toMonthlySummary = undefined;
+    req.session.toMonthlySummary = [];
     req.session.userId = undefined;
     res.redirect('/');
 });
@@ -228,9 +228,11 @@ app.get('/player-reset', function(req, res) {
 app.get('/continue', function(req, res) {
     /* Resets the game for the player.
     */
-    users[req.session.userId].setAvailablePolicies();
     users[req.session.userId].setActivePolicies();
     users[req.session.userId].setCurrentCycleTime();
+    req.session.toMonthlySummary = [];
+    req.session.currentPolicy = undefined;
+    users[req.session.userId].setPolicyDisplayed(false);
     res.redirect('/game');
 });
 

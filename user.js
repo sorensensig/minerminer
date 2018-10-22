@@ -5,6 +5,7 @@ const CYCLETIME = 60;
 let availableNothingPolicies;
 let availableKillPolicies;
 let availableInjurePolicies;
+let arrayToDeleteFrom;
 let usedPolicies = [];
 let activePolicies = 1;
 let policyDisplayed = false;
@@ -61,16 +62,15 @@ module.exports = function() {
                     let params = [availableNothingPolicies];
 
                     if(canBeKilled) {
-                        console.log(canBeKilled);
                         params.push(availableKillPolicies)
                     }
                     if(canBeInjured) {
-                        console.log(canBeInjured);
                         params.push(availableInjurePolicies);
                     }
 
                     let index = await getRandomPolicyArrayIndex(params);
                     let array = params[index];
+                    arrayToDeleteFrom = array;
 
                     currentPolicyIndex = await getRandNum(array);
                     resolve(array[currentPolicyIndex]);
@@ -92,16 +92,15 @@ module.exports = function() {
                     let params = [availableNothingPolicies];
 
                     if(canBeKilled) {
-                        console.log(canBeKilled);
                         params.push(availableKillPolicies)
                     }
                     if(canBeInjured) {
-                        console.log(canBeInjured);
                         params.push(availableInjurePolicies);
                     }
 
                     let index = await getRandomPolicyArrayIndex(params);
                     let array = params[index];
+                    arrayToDeleteFrom = array;
 
                     currentPolicyIndex = await getRandNum(array);
                     resolve(array[currentPolicyIndex]);
@@ -123,17 +122,22 @@ module.exports = function() {
         },
         setAvailablePolicies : function() {
             availableNothingPolicies = undefined;
+            availableInjurePolicies = undefined;
+            availableKillPolicies = undefined;
         },
         setActivePolicies: function(){
             activePolicies = 1;
         },
+        // REMEMBER TO FIX THIS. THIS DOES NOT TAKE INTO ACCOUNT ALL THREE POLICY ARRAYS
         deleteFromAvailablePolicies: function removePolicy() {
             /* Removes used policies so that they won't appear again, and removes one from 'activePolicies' so that
             it does not display an endless loop of new policies.
             */
+
+
             let policyIndex = currentPolicyIndex;
-            usedPolicies.push(availableNothingPolicies[policyIndex]);
-            availableNothingPolicies.splice(policyIndex, 1);
+            usedPolicies.push(arrayToDeleteFrom[policyIndex]);
+            arrayToDeleteFrom.splice(policyIndex, 1);
             activePolicies --;
         },
         getAllWorkers: function(){
