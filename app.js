@@ -52,9 +52,13 @@ app.get('/', async function(req, res){
         res.render('home');
     }
 
+    console.log("Getting Workers");
     await users[req.session.userId].setAllWorkers();
+    console.log("Setting Current Workers");
     await users[req.session.userId].setCurrentWorkers();
-    console.log("Loaded");
+    console.log("All Done");
+    users[req.session.userId].setCurrentEmployeeProduction();
+
 });
 
 app.get('/tutorial', (req, res) => res.render('tutorial'));
@@ -66,7 +70,7 @@ app.get('/game', async function(req, res){
     When this page loads and global timer has run out, the player is redirected to monthly report.
     */
     if(users[req.session.userId].getCurrentCycleTime() >= users[req.session.userId].getTotalCycleTime()){
-        res.redirect('/monthly-report');
+            res.redirect('/monthly-report');
     }else{
         let timer = users[req.session.userId].getCurrentCycleTime();
         res.render('game', {timer: timer, policyNumber: await users[req.session.userId].getActivePolicies()});
@@ -85,7 +89,13 @@ app.get('/employee-folder', async function(req, res){
         res.redirect('/monthly-report');
     }else {
         let timer = users[req.session.userId].getCurrentCycleTime();
-        res.render('employeeFolder', {workers: users[req.session.userId].getCurrentWorkers(), timer: timer});
+        let possibleHires = await api.getPossibleHires(users[req.session.userId].getAllWorkers());
+        users[req.session.userId].setPossibleHires(possibleHires);
+        res.render('employeeFolder', {workers: users[req.session.userId].getCurrentWorkers(),
+            workersInjured: users[req.session.userId].getCurrentInjuredWorkers(),
+            workersKilled: users[req.session.userId].getCurrentKilledWorkers(),
+            possibleHires: possibleHires,
+            timer: timer});
     }
 });
 
@@ -111,7 +121,20 @@ app.get('/whs-policies', async function(req, res){
              /* if there is no policy it creates one
              */
             } else {
-                let data = await users[req.session.userId].getRandPolicy();
+                // CHECK IF CURRENT EMPLOYEES ARE EITHER [KILLABLE, INJURABLE, OR NONE]
+                let canBeKilled = false,
+                    canBeInjured = false,
+                    currentWorkers = users[req.session.userId].getCurrentWorkers();
+
+                for(let worker of currentWorkers) {
+                    if(worker.type === 'Injured') {
+                        canBeInjured = true;
+                    } else if(worker.type === 'Killed' || worker.type === 'Fatal') {
+                        canBeKilled = true;
+                    }
+                }
+
+                let data = await users[req.session.userId].getRandPolicy(canBeKilled, canBeInjured);
                 let timer = users[req.session.userId].getCurrentCycleTime();
                 req.session.currentPolicy = data;
                 res.render('whsPolicies', {data: data.policyText, status: true, timer: timer});
@@ -129,6 +152,12 @@ app.get('/whs-policies', async function(req, res){
 app.get('/whs-policies/:option', function(req, res) {
     /* this function takes the players choice from the policy page, stores it and then redirects the player to game screen
     */
+
+    // REMEMBER TO USE THE POLICY LONG TERM AND SHORT TERM EFFECTS FROM APPROVE AND DENY HERE.
+    // shortTermDenyEffect
+    // longTermDenyEffect
+    // shortTermApproveEffect
+    // longTermApproveEffect
 
     let option = req.params.option;
 
@@ -167,11 +196,12 @@ app.get('/monthly-report', async function(req, res){
     for(let i = 0; i < req.session.toMonthlySummary.length; i++){
         switch (req.session.toMonthlySummary[i].policyOptionFunction){
             case "Kill":
-                api.killWorker(users[req.session.userId].getAllWorkers(), users[req.session.userId].getCurrentWorkers());
+                api.killWorker(users[req.session.userId].getAllWorkers(), users[req.session.userId].getCurrentWorkers(), users[req.session.userId].getCurrentKilledWorkers());
                 console.log("Kill");
                 break;
             case "Injure:":
-                api.injureWorker(users[req.session.userId].getAllWorkers(), users[req.session.userId].getCurrentWorkers());
+                api.injureWorker(users[req.session.userId].getAllWorkers(), users[req.session.userId].getCurrentWorkers(), users[req.session.userId].getCurrentInjuredWorkers());
+                users[req.session.userId].workerProductionReduction(1);
                 console.log("Injure");
                 break;
             case "Nothing":
@@ -184,7 +214,6 @@ app.get('/monthly-report', async function(req, res){
     }
 
     let affectedEmployees = await api.getCurrentInjuredAndKilled(users[req.session.userId].getCurrentWorkers());
-    console.log(affectedEmployees);
 
     res.render('monthlyReport', {toMonthlyReport: req.session.toMonthlySummary, affectedEmployees: affectedEmployees});
 });
@@ -196,9 +225,46 @@ app.get('/player-reset', function(req, res) {
     users[req.session.userId].setActivePolicies();
     users[req.session.userId] = undefined;
     req.session.currentPolicy = undefined;
-    req.session.toMonthlySummary = undefined;
+    req.session.toMonthlySummary = [];
     req.session.userId = undefined;
     res.redirect('/');
+});
+
+app.get('/continue', function(req, res) {
+    /* Resets the game for the player.
+    */
+    users[req.session.userId].setActivePolicies();
+    users[req.session.userId].setCurrentCycleTime();
+    users[req.session.userId].setCurrentEmployeeProduction();
+    req.session.toMonthlySummary = [];
+    req.session.currentPolicy = undefined;
+    users[req.session.userId].setPolicyDisplayed(false);
+    res.redirect('/game');
+});
+
+app.get('/fireWorker/:index', async function(req, res) {
+    /* Resets the game for the player.
+    */
+    let fired = await api.fireWorker(users[req.session.userId].getAllWorkers(),
+        users[req.session.userId].getCurrentWorkers(),
+        req.params.index);
+
+    users[req.session.userId].workerProductionReduction(fired.production);
+
+    res.redirect('/employee-folder');
+});
+
+app.get('/hireWorker/:index', function(req, res) {
+    /* Resets the game for the player.
+    */
+    api.hireWorker(users[req.session.userId].getAllWorkers(),
+        users[req.session.userId].getCurrentWorkers(),
+        users[req.session.userId].getPossibleHires(),
+        req.params.index);
+
+    users[req.session.userId].applyHireCost(6);
+
+    res.redirect('/employee-folder');
 });
 
 app.listen(process.env.PORT ||3000, () => console.log('Server listens to port 3000'));

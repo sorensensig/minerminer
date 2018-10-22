@@ -27,6 +27,7 @@
     </div>
     <div id="resetDiv" class="offset-xl-5">
         <button id="resetGame" class="btn-primary">Reset Game</button>
+        <button id="continueGame" class="btn-primary">Continue Game</button>
     </div>
 </div>
 
@@ -34,7 +35,11 @@
 
 <script>
     $("#resetGame").click(function () {
+
         window.location = "/player-reset";
+    });
+    $("#continueGame").click(function () {
+        window.location = "/continue";
     });
 </script>
 

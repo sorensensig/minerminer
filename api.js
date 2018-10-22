@@ -9,7 +9,8 @@ function makeAllWorkers(allWorkers){
         https://search.data.gov.au/dataset/ds-qld-2e5b65d7-09d5-403f-a5d5-a552410f2d5d/details?q=slq
         The code snippet is an API and appears in its original form except for the limit.
         */
-        URL = "https://data.gov.au/api/3/action/datastore_search?resource_id=63fd8050-0bab-4c04-b837-b2ce664077bf&limit=5000";
+        URL = "https://data.gov.au/api/3/action/datastore_search_sql?sql=SELECT%20*%20from%20%2263fd8050-0bab-4c04-b837-b2ce664077bf%22%20WHERE%20%22Remarks%22%20LIKE%20%27%.%.%.%27AND%20%22Name%22%20LIKE%20%27%,%20%%27"
+        //URL = "https://data.gov.au/api/3/action/datastore_search?resource_id=63fd8050-0bab-4c04-b837-b2ce664077bf&limit=5000";
         /*
         End code snippet (5. State Library of Queensland - Queensland Mining accidents 1882-1945)
         */
@@ -56,14 +57,14 @@ function makeAllWorkers(allWorkers){
                     if(type === "Injured" && injured > 0){
                         amountOfPeople --;
                         injured --;
-                        allWorkers.push({name: name, year: year, type: type, comment: comment, employed: false, injured: false, alive: true});
+                        allWorkers.push({name: name, year: year, type: type, comment: comment, employed: false, injured: false, alive: true, production: 2, hireCost: 6});
 
                     /* if the injury type is killed or fatal it is considered as a person that can be killed
                     */
                     }else if((type === "Killed" || type === "Fatal") && fatal > 0){
                         amountOfPeople --;
                         fatal --;
-                        allWorkers.push({name: name, year: year, type: type, comment: comment, employed: false, injured: false, alive: true});
+                        allWorkers.push({name: name, year: year, type: type, comment: comment, employed: false, injured: false, alive: true, production: 2, hireCost: 6});
                     }
                 }
                 counter ++;
@@ -73,45 +74,31 @@ function makeAllWorkers(allWorkers){
     });
 }
 
-function getWorkers(allWorkers){
+async function getWorkers(allWorkers){
     /* returns all workers, if there are no workers in array retrieves workers from API
     */
-    return new Promise(async function(resolve, reject){
-        if(allWorkers.length === 0){
-            allWorkers = await makeAllWorkers(allWorkers);
-        }
-        resolve(allWorkers);
-    });
+    if(allWorkers.length === 0){
+        allWorkers = await makeAllWorkers(allWorkers);
+    }
+
+    console.log("Randomizing");
+    allWorkers = await randomize(allWorkers);
+    console.log("Randomized");
+
+    return allWorkers;
 }
 
-function makeCurrentWorkers(allWorkers, currentWorkers){
+async function makeCurrentWorkers(allWorkers, currentWorkers){
     /* Makes a list of workers that are currently employed
     Ensures that there are an equal amount of people that can be injured and can die
     */
     let amountOfHires = 10;
-    let fatal = 5;
-    let injured = 5;
-    let counter = 0;
 
     return new Promise(function(resolve, reject){
-        while (amountOfHires > 0 && counter < allWorkers.length){
-            /* if the injury type is killed or fatal it is considered as a person that can be killed
-            */
-            if (fatal > 0 && (allWorkers[counter].type === "Killed" || allWorkers[counter].type === "Fatal")){
-                fatal --;
-                amountOfHires --;
-                allWorkers[counter].employed = true;
-                currentWorkers.push(allWorkers[counter]);
-            }
-            /* if the injury type is injured it is considered as a person that can be injured
-            */
-            else if (injured >= 0 && allWorkers[counter].type) {
-                injured --;
-                amountOfHires --;
-                currentWorkers.push(allWorkers[counter]);
-                allWorkers[counter].employed = true;
-            }
-            counter ++;
+        for (let i = 0; i < amountOfHires; i++){
+            amountOfHires --;
+            allWorkers[i].employed = true;
+            currentWorkers.push(allWorkers[i]);
         }
         resolve(currentWorkers);
     });
@@ -165,6 +152,22 @@ function findType(workers, type, type2){
     return 0;
 }
 
+async function randomize(array){
+
+    return new Promise(function(resolve, reject)
+    {
+        let randomArrayHolder = [];
+
+        while (array.length > 0) {
+            let randomWorker = array.splice(Math.round(Math.random() * (array.length - 1)), 1)
+            randomArrayHolder.push(randomWorker[0]);
+        }
+        resolve(randomArrayHolder);
+    });
+
+}
+
+
 let makeExport = {
     getAllWorkers: async function(allWorkers){
         /* Retrieves list of all workers
@@ -176,30 +179,41 @@ let makeExport = {
         */
         return await getCurrent(allWorkers, currentWorkers);
     },
-    fireWorker: function(allWorkers, workers, index){
+    fireWorker: async function(allWorkers, workers, index){
         /* Fires a worker (currently not used)
         */
         let allIndex = findAllWorkerIndex(allWorkers, workers, index);
         allWorkers[allIndex].employed = false;
-        workers.splice(index, 1);
+        let fired = workers.splice(index, 1);
+        return fired[0];
     },
-    injureWorker: function(allWorkers, workers){
+    hireWorker: function(allWorkers, workers, possibleHires, index){
+        /* Fires a worker (currently not used)
+        */
+        let allIndex = findAllWorkerIndex(allWorkers, possibleHires, index);
+        allWorkers[allIndex].employed = true;
+        workers.push(possibleHires[index]);
+    },
+    injureWorker: function(allWorkers, workers, injured){
         /* Injures a worker
         */
         let index = findType(workers, "Injured", "Injured");
         let allIndex = findAllWorkerIndex(allWorkers, workers, index);
         allWorkers[allIndex].injured = true;
         workers[index].injured = true;
-        return workers[index];
+        workers[index].production = 1;
+        injured.push(injured.splice(index, 1));
+        return injured[-1];
     },
-    killWorker: function(allWorkers, workers){
+    killWorker: function(allWorkers, workers, killed){
         /* Kills a worker
         */
         let index  = findType(workers, "Killed", "Fatal");
         let allIndex = findAllWorkerIndex(allWorkers, workers, index);
         allWorkers[allIndex].alive = false;
         workers[index].alive = false;
-        return workers[index];
+        killed.push(workers.splice(index, 1));
+        return killed[-1];
     },
     getCurrentInjuredAndKilled: function(workers){
         /* Retrieves all workers that either have been killed or injured
@@ -215,6 +229,27 @@ let makeExport = {
 
         });
 
+    },
+    getPossibleHires: async function(allWorkers){
+        return new Promise(function(resolve, reject){
+            let possibleHires = [];
+            let amountOfHires = 10;
+            let counter = 0;
+
+            while (amountOfHires > 0 && counter < allWorkers.length){
+                if(!allWorkers[counter].employed){
+                    possibleHires.push(allWorkers[counter]);
+                    amountOfHires--;
+                }
+                counter++;
+            }
+            resolve(possibleHires);
+        });
+    },
+    randomizeArray: async function(array){
+        /* prints all workers in array (only used during testing)
+        */
+        return await randomize(array);
     },
     printWorkers: function(workers){
         /* prints all workers in array (only used during testing)

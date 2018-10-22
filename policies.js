@@ -7,9 +7,11 @@ const fs = require('fs');
 /*
 End code snippet (1. fs)
 */
-const filePath = './policyInfo.txt';
+const filePath = ['./policyInfoKill.txt', './policyInfoInjure.txt', './policyInfoNothing.txt'];
 
-function Policy(policyNumber, policyTitle, policyText, policyDenyOption, policyApproveOption, policyDenyOptionFunction, policyApproveOptionFunction){
+function Policy(policyNumber, policyTitle, policyText, policyDenyOption, policyApproveOption, policyDenyOptionFunction,
+                policyApproveOptionFunction, policyDenyHint, policyApproveHint, shortTermDenyEffect, longTermDenyEffect,
+                shortTermApproveEffect, longTermApproveEffect){
     /* Constructor for the 'Policy' object.
     */
     this.policyNumber = policyNumber;
@@ -19,12 +21,20 @@ function Policy(policyNumber, policyTitle, policyText, policyDenyOption, policyA
     this.policyApproveOption = policyApproveOption;
     this.policyDenyOptionFunction = policyDenyOptionFunction;
     this.policyApproveOptionFunction = policyApproveOptionFunction;
+    this.policyDenyHint = policyDenyHint;
+    this.policyApproveHint = policyApproveHint;
+    this.shortTermDenyEffect = shortTermDenyEffect;
+    this.longTermDenyEffect = longTermDenyEffect;
+    this.shortTermApproveEffect = shortTermApproveEffect;
+    this.longTermApproveEffect = longTermApproveEffect;
 }
 
-let allPolicies = [];
+let allKillPolicies = [],
+    allInjurePolicies = [],
+    allNothingPolicies = [];
 
-function createPolicies() {
-    /* Function that retrieves a string from 'policyInfo.txt' and makes the string into an object using the
+function createPolicies(array, path) {
+    /* Function that retrieves a string from 'policyInfoKill.txt' and makes the string into an object using the
     constructor above.
     */
     return new Promise(function(resolve, reject){
@@ -32,32 +42,33 @@ function createPolicies() {
         https://nodejs.org/dist/latest-v6.x/docs/api/fs.html
         The code snippet has been altered to work with the filepath of this code.
         */
-        fs.readFile(filePath, function (err, data) {
-            if (err) throw err;
 
+        fs.readFile(path, function (err, data) {
+            if (err) throw err;
             let fileAsString = data.toString();
             /*
-            End code snippet (2. fs)
-            */
+               End code snippet (2. fs)
+               */
             /*
-            The code snippet (3. JavaScript String replace() Method) below has been adapted from:
-            https://www.w3schools.com/jsref/jsref_replace.asp
-            The code snippet has been altered to work with this specific case.
-            */
+               The code snippet (3. JavaScript String replace() Method) below has been adapted from:
+               https://www.w3schools.com/jsref/jsref_replace.asp
+               The code snippet has been altered to work with this specific case.
+               */
             let lineFeedRemoved = fileAsString.replace(/\n/g, '');
             let carriageReturnRemoved = lineFeedRemoved.replace(/\r/g, '');
             /*
-            End code snippet (3. JavaScript String replace() Method)
-            */
+               End code snippet (3. JavaScript String replace() Method)
+               */
             let objectsAsStringArray = carriageReturnRemoved.split('*');
 
             for (let i = 0; i < objectsAsStringArray.length; i++) {
                 let toObject = objectsAsStringArray[i].split(' ~ ');
-                allPolicies[i] = new Policy(i, toObject[0], toObject[1], toObject[2], toObject[3], toObject[4], toObject[5]);
+                array[i] = new Policy(i, toObject[0], toObject[1], toObject[2], toObject[3], toObject[4], toObject[5],
+                    toObject[6], toObject[7], toObject[8], toObject[9], toObject[10], toObject[11]);
             }
-            resolve();
+            resolve(array);
         });
-    })
+    });
 }
 
 module.exports = {
@@ -66,11 +77,14 @@ module.exports = {
         policies.
         */
         return new Promise(async function(resolve, reject) {
-            if(allPolicies.length > 0) {
-                resolve(allPolicies);
+            if(allKillPolicies.length > 0) {
+
+                resolve([allKillPolicies, allInjurePolicies, allNothingPolicies]);
             } else {
-                await createPolicies();
-                resolve(allPolicies);
+                allKillPolicies = await createPolicies(allKillPolicies, filePath[0]);
+                allInjurePolicies = await createPolicies(allInjurePolicies, filePath[1]);
+                allNothingPolicies = await createPolicies(allNothingPolicies, filePath[2]);
+                resolve([allKillPolicies, allInjurePolicies, allNothingPolicies]);
             }
         });
     }

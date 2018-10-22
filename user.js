@@ -2,23 +2,38 @@ const policies = require('./policies');
 const api = require('./api');
 const CYCLETIME = 60;
 
-let availablePolicies;
-let usedPolicies = [];
-let activePolicies = 1;
-let policyDisplayed = false;
-let currentPolicyIndex;
+let availableNothingPolicies,
+    availableKillPolicies,
+    availableInjurePolicies,
+    arrayToDeleteFrom,
+    usedPolicies = [],
+    activePolicies = 1,
+    policyDisplayed = false,
+    currentPolicyIndex;
 
-let currentCycleTime = 0;
-let activeTimer = false;
+let currentCycleTime = 0,
+    activeTimer = false;
 
-let allWorkers = [];
-let currentWorkers = [];
+let allWorkers = [],
+    currentWorkers = [],
+    currentInjuredWorkers = [],
+    currentKilledWorkers = [],
+    possibleHires = [];
 
+let equity = 4,
+    staticIncome,
+    variableIncome;
 
-function getRandNum() {
-    /* Returns a random number between 0 and length of the 'availablePolicies' array. */
+function getRandNum(array) {
+    /* Returns a random number between 0 and length of the 'availableNothingPolicies' array. */
     return new Promise(async function(resolve, reject) {
-        resolve(Math.floor((Math.random() * availablePolicies.length)));
+        resolve(Math.floor((Math.random() * array.length)));
+    });
+}
+
+function getRandomPolicyArrayIndex(params) {
+    return new Promise(async function(resolve) {
+       resolve(Math.floor((Math.random() * params.length)));
     });
 }
 
@@ -39,15 +54,42 @@ function cycleTimer(){
      },1000 );
 }
 
+async function currentEmployeeProduction(){
+    variableIncome = 0;
+
+    for(let i = 0; i < currentWorkers.length; i++){
+        variableIncome += currentWorkers[i].production;
+    }
+
+    for(let i = 0; i < currentInjuredWorkers.length; i++){
+        variableIncome += currentInjuredWorkers[i].production;
+    }
+}
+
+
 module.exports = function() {
     return {
-        getRandPolicy : function() {
-            /* Returns a random policy object from the 'availablePolicies' array.
+        getRandPolicy : function(canBeKilled, canBeInjured) {
+            /* Returns a random policy object from the 'availableNothingPolicies' array.
             */
             return new Promise(async function(resolve, reject) {
-                if (availablePolicies !== undefined) {
-                    currentPolicyIndex = await getRandNum();
-                    resolve(availablePolicies[currentPolicyIndex]);
+                if (availableNothingPolicies !== undefined && availableKillPolicies !== undefined && availableInjurePolicies !== undefined) {
+                    // get policy from correct array
+                    let params = [availableNothingPolicies];
+
+                    if(canBeKilled) {
+                        params.push(availableKillPolicies)
+                    }
+                    if(canBeInjured) {
+                        params.push(availableInjurePolicies);
+                    }
+
+                    let index = await getRandomPolicyArrayIndex(params);
+                    let array = params[index];
+                    arrayToDeleteFrom = array;
+
+                    currentPolicyIndex = await getRandNum(array);
+                    resolve(array[currentPolicyIndex]);
                 } else {
                     let unParsed = await policies.getPolicies();
                     /*
@@ -55,12 +97,29 @@ module.exports = function() {
                     https://medium.com/@gamshan001/javascript-deep-copy-for-array-and-object-97e3d4bc401a
                     The code snippet appears mostly in its original form, except for changing some variable names.
                     */
-                    availablePolicies =  JSON.parse(JSON.stringify(unParsed));
+                    availableKillPolicies = await JSON.parse(JSON.stringify(unParsed[0]));
+                    availableInjurePolicies =  await JSON.parse(JSON.stringify(unParsed[1]));
+                    availableNothingPolicies =  await JSON.parse(JSON.stringify(unParsed[2]));
+
                     /*
                     End code snippet (4. JavaScript Deep copy for array and object)
                     */
-                    currentPolicyIndex = await getRandNum();
-                    resolve(availablePolicies[currentPolicyIndex]);
+                    // get policy from correct array
+                    let params = [availableNothingPolicies];
+
+                    if(canBeKilled) {
+                        params.push(availableKillPolicies)
+                    }
+                    if(canBeInjured) {
+                        params.push(availableInjurePolicies);
+                    }
+
+                    let index = await getRandomPolicyArrayIndex(params);
+                    let array = params[index];
+                    arrayToDeleteFrom = array;
+
+                    currentPolicyIndex = await getRandNum(array);
+                    resolve(array[currentPolicyIndex]);
                 }
             });
         },
@@ -78,18 +137,23 @@ module.exports = function() {
             policyDisplayed = bool;
         },
         setAvailablePolicies : function() {
-            availablePolicies = undefined;
+            availableNothingPolicies = undefined;
+            availableInjurePolicies = undefined;
+            availableKillPolicies = undefined;
         },
         setActivePolicies: function(){
             activePolicies = 1;
         },
+        // REMEMBER TO FIX THIS. THIS DOES NOT TAKE INTO ACCOUNT ALL THREE POLICY ARRAYS
         deleteFromAvailablePolicies: function removePolicy() {
             /* Removes used policies so that they won't appear again, and removes one from 'activePolicies' so that
             it does not display an endless loop of new policies.
             */
+
+
             let policyIndex = currentPolicyIndex;
-            usedPolicies.push(availablePolicies[policyIndex]);
-            availablePolicies.splice(policyIndex, 1);
+            usedPolicies.push(arrayToDeleteFrom[policyIndex]);
+            arrayToDeleteFrom.splice(policyIndex, 1);
             activePolicies --;
         },
         getAllWorkers: function(){
@@ -97,6 +161,18 @@ module.exports = function() {
         },
         getCurrentWorkers: function(){
             return currentWorkers;
+        },
+        getCurrentInjuredWorkers: function(){
+            return currentInjuredWorkers;
+        },
+        getCurrentKilledWorkers: function(){
+            return currentKilledWorkers;
+        },
+        setCurrentEmployeeProduction: function(){
+            currentEmployeeProduction();
+        },
+        getPossibleHires: function(){
+            return possibleHires;
         },
         setAllWorkers: async function(){
             allWorkers = await api.getAllWorkers(allWorkers);
@@ -118,6 +194,16 @@ module.exports = function() {
         setCurrentCycleTime: function() {
             currentCycleTime = 0;
             activeTimer = false;
+        },
+        setPossibleHires: function(workers){
+            possibleHires = workers;
+        },
+        applyHireCost: function(cost){
+            equity -= cost;
+        },
+        workerProductionReduction: function(cost){
+            variableIncome -= cost;
         }
+
     }
 };
