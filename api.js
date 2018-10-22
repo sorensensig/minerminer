@@ -80,38 +80,26 @@ function getWorkers(allWorkers){
         if(allWorkers.length === 0){
             allWorkers = await makeAllWorkers(allWorkers);
         }
+
+        console.log("Randomizing");
+        allWorkers = await randomize(allWorkers);
+        console.log("Randomized");
+
         resolve(allWorkers);
     });
 }
 
-function makeCurrentWorkers(allWorkers, currentWorkers){
+async function makeCurrentWorkers(allWorkers, currentWorkers){
     /* Makes a list of workers that are currently employed
     Ensures that there are an equal amount of people that can be injured and can die
     */
     let amountOfHires = 10;
-    let fatal = 10;
-    let injured = -1;
-    let counter = 0;
 
     return new Promise(function(resolve, reject){
-        while (amountOfHires > 0 && counter < allWorkers.length){
-            /* if the injury type is killed or fatal it is considered as a person that can be killed
-            */
-            if (fatal >= 0 && (allWorkers[counter].type === "Killed" || allWorkers[counter].type === "Fatal")){
-                fatal --;
-                amountOfHires --;
-                allWorkers[counter].employed = true;
-                currentWorkers.push(allWorkers[counter]);
-            }
-            /* if the injury type is injured it is considered as a person that can be injured
-            */
-            else if (injured >= 0 && allWorkers[counter].type) {
-                injured --;
-                amountOfHires --;
-                currentWorkers.push(allWorkers[counter]);
-                allWorkers[counter].employed = true;
-            }
-            counter ++;
+        for (let i = 0; i < amountOfHires; i++){
+            amountOfHires --;
+            allWorkers[i].employed = true;
+            currentWorkers.push(allWorkers[i]);
         }
         resolve(currentWorkers);
     });
@@ -165,7 +153,14 @@ function findType(workers, type, type2){
     return 0;
 }
 
-function randomize(array){
+async function randomize(array){
+    let randomArrayHolder = [];
+
+    while(array.length > 0){
+        randomArrayHolder.push(array.splice(Math.round(Math.random()*(array.length-1)), 1));
+    }
+
+    return randomArrayHolder;
 
 }
 

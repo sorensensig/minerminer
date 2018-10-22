@@ -52,9 +52,11 @@ app.get('/', async function(req, res){
         res.render('home');
     }
 
+    console.log("Getting Workers");
     await users[req.session.userId].setAllWorkers();
+    console.log("Setting Current Workers");
     await users[req.session.userId].setCurrentWorkers();
-    console.log("Loaded");
+    console.log("All Done");
 });
 
 app.get('/tutorial', (req, res) => res.render('tutorial'));
