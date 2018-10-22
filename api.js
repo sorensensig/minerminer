@@ -179,12 +179,13 @@ let makeExport = {
         */
         return await getCurrent(allWorkers, currentWorkers);
     },
-    fireWorker: function(allWorkers, workers, index){
+    fireWorker: async function(allWorkers, workers, index){
         /* Fires a worker (currently not used)
         */
         let allIndex = findAllWorkerIndex(allWorkers, workers, index);
         allWorkers[allIndex].employed = false;
-        workers.splice(index, 1);
+        let fired = workers.splice(index, 1);
+        return fired[0];
     },
     hireWorker: function(allWorkers, workers, possibleHires, index){
         /* Fires a worker (currently not used)

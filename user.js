@@ -55,12 +55,15 @@ function cycleTimer(){
 }
 
 async function currentEmployeeProduction(){
-    let totalProduction = 0;
+    variableIncome = 0;
 
     for(let i = 0; i < currentWorkers.length; i++){
-        totalProduction += currentWorkers[i].production;
+        variableIncome += currentWorkers[i].production;
     }
-    return totalProduction;
+
+    for(let i = 0; i < currentInjuredWorkers.length; i++){
+        variableIncome += currentInjuredWorkers[i].production;
+    }
 }
 
 
@@ -165,8 +168,8 @@ module.exports = function() {
         getCurrentKilledWorkers: function(){
             return currentKilledWorkers;
         },
-        getCurrentEmployeeProduction: async function(){
-            return await currentEmployeeProduction();
+        setCurrentEmployeeProduction: function(){
+            currentEmployeeProduction();
         },
         getPossibleHires: function(){
             return possibleHires;
@@ -196,7 +199,11 @@ module.exports = function() {
             possibleHires = workers;
         },
         applyHireCost: function(cost){
+            equity -= cost;
+        },
+        workerProductionReduction: function(cost){
             variableIncome -= cost;
         }
+
     }
 };

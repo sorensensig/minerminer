@@ -57,6 +57,8 @@ app.get('/', async function(req, res){
     console.log("Setting Current Workers");
     await users[req.session.userId].setCurrentWorkers();
     console.log("All Done");
+    users[req.session.userId].setCurrentEmployeeProduction();
+
 });
 
 app.get('/tutorial', (req, res) => res.render('tutorial'));
@@ -199,6 +201,7 @@ app.get('/monthly-report', async function(req, res){
                 break;
             case "Injure:":
                 api.injureWorker(users[req.session.userId].getAllWorkers(), users[req.session.userId].getCurrentWorkers(), users[req.session.userId].getCurrentInjuredWorkers());
+                users[req.session.userId].workerProductionReduction(1);
                 console.log("Injure");
                 break;
             case "Nothing":
@@ -232,18 +235,21 @@ app.get('/continue', function(req, res) {
     */
     users[req.session.userId].setActivePolicies();
     users[req.session.userId].setCurrentCycleTime();
+    users[req.session.userId].setCurrentEmployeeProduction();
     req.session.toMonthlySummary = [];
     req.session.currentPolicy = undefined;
     users[req.session.userId].setPolicyDisplayed(false);
     res.redirect('/game');
 });
 
-app.get('/fireWorker/:index', function(req, res) {
+app.get('/fireWorker/:index', async function(req, res) {
     /* Resets the game for the player.
     */
-    api.fireWorker(users[req.session.userId].getAllWorkers(),
+    let fired = await api.fireWorker(users[req.session.userId].getAllWorkers(),
         users[req.session.userId].getCurrentWorkers(),
         req.params.index);
+
+    users[req.session.userId].workerProductionReduction(fired.production);
 
     res.redirect('/employee-folder');
 });
