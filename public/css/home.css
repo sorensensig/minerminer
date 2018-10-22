@@ -71,8 +71,7 @@ h1 {
   height: 100vh;
   background: url("../images/policy-folder.png") no-repeat;
   background-size: auto 100%;
-  background-position: center;
-  overflow: hidden;}
+  background-position: center; }
   .policy-folder .policy-details {
     margin-top: 100px; }
     .policy-folder .policy-details p {
@@ -87,12 +86,20 @@ h1 {
   bottom: 15%;
   left: 48%; }
 
-.tutorial-content {
-  width: 100vh; }
+#tutorial-content .game-item {
+  cursor: pointer; }
 
-.tutorial-content img {
-  width: 100vw;
-  height: 100vh; }
+#tutorial-popup1,
+#tutorial-popup4 {
+  display: none;
+  position: absolute;
+  width: 280px;
+  padding: 10px;
+  margin-top: -600px;
+  background: #eeeeee;
+  color: #000000;
+  border: 1px solid #1a1a1a;
+  font-size: 90%; }
 
 .monthly-report {
   height: 100vh;
@@ -112,6 +119,6 @@ h1 {
 
 .timer {
   position: absolute;
-  width: 10px;
+  width: 100px;
   padding: 10px;
   font-size: 32px; }

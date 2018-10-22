@@ -1,10 +1,55 @@
 <% include partials/header %>
-<div class="tutorial-content">
-    <a href="/">
-        <img src="/images/tutorial.png" >
-    </a>
-    <!--<h1> Tutorial Page </h1>-->
-    <!--<p>Hello world</p>-->
+<div class="game-content" id="tutorial-content">
+    <!--<a href="/">-->
+        <!--<img src="/images/tutorial.png" >-->
+    <!--</a>-->
+
+    <div>
+        <img class="game-item" id="game-item1" src="/images/item1.png" >
+        <img class="game-item" src="/images/item2.png" >
+        <img class="game-item" src="/images/item3.png" >
+        <img class="game-item" id="game-item4" src="/images/item4.png">
+    </div>
+
+    <img id="game-table" src="/images/table.png" >
+
+    <div class="tutorial-popup" id="tutorial-popup1">
+        <h3>Employee Folder</h3>
+        <p>
+            This folder gives you an overview of your company's personal resources. The folder lets you manage and fire current employees or hire new ones.
+        </p>
+    </div>
+
+    <div class="tutorial-popup" id="tutorial-popup4">
+        <h3>Workplace Health and Safety Folder</h3>
+        <p>
+            This folder is a collection of the policies that are currently available to you and let's you decide on whether you wish to approve or deny incoming policy requests.
+        </p>
+    </div>
 
 </div>
 <% include partials/footer %>
+
+<script>
+    $(function() {
+        var moveLeft = 20;
+        var moveDown = 10;
+
+        $('img#game-item1').hover(function(e) {
+            $('div#tutorial-popup1').show();
+        }, function() {
+            $('div#tutorial-popup1').hide();
+        });
+
+        $('img#game-item4').hover(function(e) {
+            $('div#tutorial-popup4').show();
+        }, function() {
+            $('div#tutorial-popup4').hide();
+        });
+
+        $('img.game-item').mousemove(function(e) {
+            $("div.tutorial-popup").css('top', e.pageY + moveDown).css('left', e.pageX + moveLeft);
+        });
+
+    });
+</script>

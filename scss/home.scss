@@ -122,14 +122,32 @@ h1 {
 }
 
 // Tutorial page
-.tutorial-content {
-  width: 100vh;
+#tutorial-content {
+  .game-item {
+    cursor: pointer;
+  }
 }
 
-.tutorial-content img {
-  width: 100vw;
-  height: 100vh;
+#tutorial-popup1,
+#tutorial-popup4 {
+  display: none;
+  position: absolute;
+  width: 280px;
+  padding: 10px;
+  margin-top: -600px;
+  background: #eeeeee;
+  color: #000000;
+  border: 1px solid #1a1a1a;
+  font-size: 90%;
 }
+//.tutorial-content {
+//  width: 100vh;
+//}
+//
+//.tutorial-content img {
+//  width: 100vw;
+//  height: 100vh;
+//}
 
 // Monthly report
 .monthly-report {
