@@ -1,24 +1,21 @@
 <% include partials/header %>
-<% include partials/timer %>
 
 <div class="game-content">
-    <div>
-        <a href="employee-folder" class="game-item"><img src="/images/item1.png" ></a>
-        <a href="#" class="game-item game-disabled"><img src="/images/item2.png" ></a>
-        <a href="#" class="game-item game-disabled"><img src="/images/item3.png" ></a>
-        <!-- The artwork (1. Hexagon) below has been sourced from:
-             https://www.flaticon.com/free-icon/hexagon-geometrical-shape-outline_32425#term=hexagon&page=1&position=3
-             The art does not appear in it's original form where as the color has been changed and appended to a picture
-        -->
+
+    <div id="room-content">
+        <% include partials/timer %>
+
+        <a href="employee-folder" class="game-item"><img src="/images/folder1.png" ></a>
+
         <% if(policyNumber > 0) { %>
-            <a href="whs-policies" class="game-item"><img src="/images/item4-notification.png"></a>
+            <a href="whs-policies" class="game-item"><img src="/images/folder2.png"></a>
         <!-- End of artwork (1. Hexagon)-->
         <% } else { %>
-            <a href="whs-policies" class="game-item"><img src="/images/item4.png"></a>
+            <a href="whs-policies" class="game-item"><img src="/images/folder2.png"></a>
         <% } %>
     </div>
 
-    <img id="game-table" src="/images/table.png" >
+    <img id="room" src="/images/room.png" >
 </div>
 
 <% include partials/footer %>
@@ -26,9 +23,7 @@
 <script> setInterval(function(){self.location.reload()},5000) </script>
 
 <!-- Script to run timer -->
-
-
 <script>
-    let timer = $(".timer span").html();
-    setInterval(function(){timer--; if(timer>=0) { $(".timer span").html(timer)}}, 1000);
+    let timer = $(".hud span").html();
+    setInterval(function(){timer--; if(timer>=0) { $(".hud span").html(timer)}}, 1000);
 </script>

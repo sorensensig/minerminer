@@ -1,6 +1,5 @@
 body {
-  margin: 0;
-  background-color: #bada55; }
+  margin: 0; }
 
 p {
   margin: 5px; }
@@ -14,22 +13,44 @@ h1 {
   left: 50%;
   transform: translate(-50%, -50%); }
 
+@keyframes float {
+  0% {
+    box-shadow: 0 5px 15px 0px rgba(0, 0, 0, 0.6);
+    transform: translatey(0px); }
+  50% {
+    box-shadow: 0 25px 15px 0px rgba(0, 0, 0, 0.2);
+    transform: translatey(-20px); }
+  100% {
+    box-shadow: 0 5px 15px 0px rgba(0, 0, 0, 0.6);
+    transform: translatey(0px); } }
+
 .content > img {
-  margin-top: -300px; }
+  width: 100vw;
+  height: 100vh;
+  transform: translatey(0px);
+  animation: float 6s ease-in-out infinite; }
 
 .content > div {
-  margin-top: 50px;
+  margin-top: 120px;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%); }
+
+#mute {
+  margin-bottom: -200px; }
+  #mute a img {
+    width: 50px;
+    height: 50px; }
 
 .btn-primary {
   background: goldenrod;
   padding: 25px;
   text-align: center;
   font-size: 18px;
-  margin-top: 50px; }
+  margin-top: 50px;
+  margin-right: 25px;
+  border-radius: 100px; }
 
 .btn-primary:hover {
   text-decoration: none; }
@@ -43,11 +64,18 @@ h1 {
 .game-content > div {
   display: inline-block; }
 
-.game-content #game-table {
-  width: 100%; }
+.game-content #room {
+  width: 100%;
+  height: 100vh; }
 
-.game-item img:hover {
-  transform: scale(1.1); }
+#room-content {
+  position: absolute; }
+  #room-content .game-item {
+    position: relative;
+    left: 400px;
+    top: 900px; }
+    #room-content .game-item img:hover {
+      transform: scale(1.1); }
 
 .game-disabled {
   cursor: no-drop; }
@@ -58,9 +86,6 @@ h1 {
   background-size: 100%; }
 
 .game-folder #employee-details {
-  margin-top: 100px; }
-
-.game-folder #hire-details {
   margin-top: 100px; }
 
 .game-folder .game-options {
@@ -93,12 +118,12 @@ h1 {
   cursor: pointer; }
 
 #tutorial-popup1,
-#tutorial-popup4 {
+#tutorial-popup2 {
   display: none;
   position: absolute;
   width: 280px;
   padding: 10px;
-  margin-top: -600px;
+  margin-top: -300px;
   background: #eeeeee;
   color: #000000;
   border: 1px solid #1a1a1a;
@@ -120,7 +145,7 @@ h1 {
   .monthly-report #resetDiv {
     margin-top: 20%; }
 
-.timer {
+.hud {
   position: absolute;
   width: 100px;
   padding: 10px;

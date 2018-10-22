@@ -2,9 +2,22 @@
 <% include partials/header %>
 
 <div class="content">
-    <img src="/images/logo.png" alt="Miner Miner Logo">
+    <img src="/images/splash.png" alt="Miner Miner background">
     <div>
         <a href="game" class="btn-primary">START GAME</a>
         <a href="tutorial" class="btn-primary">TUTORIAL</a>
     </div>
 </div>
+
+<audio autoplay loop id="player">
+    <source src="audio/ruined_planet.ogg" type="audio/ogg">
+</audio>
+
+<% include partials/footer %>
+
+<script>
+    $("#mute").click(function () {
+        var bool = $("player").prop("muted");
+        $("#player").prop("muted", !bool);
+    })
+</script>

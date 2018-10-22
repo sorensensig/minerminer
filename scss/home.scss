@@ -7,7 +7,7 @@
 $background-all: #bada55;
 body {
   margin: 0;
-  background-color: $background-all;
+  //background-color: $background-all;
 }
 
 p {
@@ -28,16 +28,43 @@ h1 {
   transform: translate(-50%, -50%);
 }
 
+@keyframes float {
+  0% {
+    box-shadow: 0 5px 15px 0px rgba(0,0,0,0.6);
+    transform: translatey(0px);
+  }
+  50% {
+    box-shadow: 0 25px 15px 0px rgba(0,0,0,0.2);
+    transform: translatey(-20px);
+  }
+  100% {
+    box-shadow: 0 5px 15px 0px rgba(0,0,0,0.6);
+    transform: translatey(0px);
+  }
+}
+
 .content > img {
-  margin-top: -300px;
+  width: 100vw;
+  height: 100vh;
+  transform: translatey(0px);
+  animation: float 6s ease-in-out infinite;
 }
 
 .content > div {
-  margin-top: 50px;
+  margin-top: 120px;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+#mute {
+  a img {
+    width: 50px;
+    height: 50px;
+  }
+
+  margin-bottom: -200px;
 }
 
 .btn-primary {
@@ -46,6 +73,8 @@ h1 {
   text-align: center;
   font-size: 18px;
   margin-top: 50px;
+  margin-right: 25px;
+  border-radius: 100px;
 }
 
 .btn-primary:hover {
@@ -63,12 +92,23 @@ h1 {
   display: inline-block;
   //margin-bottom: -100px;
 }
-.game-content #game-table {
+.game-content #room {
   width: 100%;
+  height: 100vh;
 }
 
-.game-item img:hover {
-  transform: scale(1.1);
+#room-content {
+  position: absolute;
+
+  .game-item {
+    position: relative;
+    left: 400px;
+    top: 900px;
+
+    img:hover {
+      transform: scale(1.1);
+    }
+  }
 }
 
 .game-disabled {
@@ -129,12 +169,12 @@ h1 {
 }
 
 #tutorial-popup1,
-#tutorial-popup4 {
+#tutorial-popup2 {
   display: none;
   position: absolute;
   width: 280px;
   padding: 10px;
-  margin-top: -600px;
+  margin-top: -300px;
   background: #eeeeee;
   color: #000000;
   border: 1px solid #1a1a1a;
@@ -176,8 +216,8 @@ h1 {
   }
 }
 
-// Timer for the game
-.timer {
+// Heads Up Display (HUD) for the game
+.hud {
   position: absolute;
   width: 100px;
   padding: 10px;
