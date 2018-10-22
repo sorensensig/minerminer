@@ -54,6 +54,16 @@ function cycleTimer(){
      },1000 );
 }
 
+async function currentEmployeeProduction(){
+    let totalProduction = 0;
+
+    for(let i = 0; i < currentWorkers.length; i++){
+        totalProduction += currentWorkers[i].production;
+    }
+    return totalProduction;
+}
+
+
 module.exports = function() {
     return {
         getRandPolicy : function(canBeKilled, canBeInjured) {
@@ -155,6 +165,9 @@ module.exports = function() {
         getCurrentKilledWorkers: function(){
             return currentKilledWorkers;
         },
+        getCurrentEmployeeProduction: async function(){
+            return await currentEmployeeProduction();
+        },
         getPossibleHires: function(){
             return possibleHires;
         },
@@ -181,6 +194,9 @@ module.exports = function() {
         },
         setPossibleHires: function(workers){
             possibleHires = workers;
+        },
+        applyHireCost: function(cost){
+            variableIncome -= cost;
         }
     }
 };

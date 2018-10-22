@@ -56,14 +56,14 @@ function makeAllWorkers(allWorkers){
                     if(type === "Injured" && injured > 0){
                         amountOfPeople --;
                         injured --;
-                        allWorkers.push({name: name, year: year, type: type, comment: comment, employed: false, injured: false, alive: true});
+                        allWorkers.push({name: name, year: year, type: type, comment: comment, employed: false, injured: false, alive: true, production: 2, hireCost: 6});
 
                     /* if the injury type is killed or fatal it is considered as a person that can be killed
                     */
                     }else if((type === "Killed" || type === "Fatal") && fatal > 0){
                         amountOfPeople --;
                         fatal --;
-                        allWorkers.push({name: name, year: year, type: type, comment: comment, employed: false, injured: false, alive: true});
+                        allWorkers.push({name: name, year: year, type: type, comment: comment, employed: false, injured: false, alive: true, production: 2, hireCost: 6});
                     }
                 }
                 counter ++;
@@ -197,6 +197,7 @@ let makeExport = {
         let allIndex = findAllWorkerIndex(allWorkers, workers, index);
         allWorkers[allIndex].injured = true;
         workers[index].injured = true;
+        workers[index].production = 1;
         injured.push(injured.splice(index, 1));
         return injured[-1];
     },
