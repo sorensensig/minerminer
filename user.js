@@ -2,24 +2,27 @@ const policies = require('./policies');
 const api = require('./api');
 const CYCLETIME = 60;
 
-let availableNothingPolicies;
-let availableKillPolicies;
-let availableInjurePolicies;
-let arrayToDeleteFrom;
-let usedPolicies = [];
-let activePolicies = 1;
-let policyDisplayed = false;
-let currentPolicyIndex;
+let availableNothingPolicies,
+    availableKillPolicies,
+    availableInjurePolicies,
+    arrayToDeleteFrom,
+    usedPolicies = [],
+    activePolicies = 1,
+    policyDisplayed = false,
+    currentPolicyIndex;
 
-let currentCycleTime = 0;
-let activeTimer = false;
+let currentCycleTime = 0,
+    activeTimer = false;
 
-let allWorkers = [];
-let currentWorkers = [];
-let currentInjuredWorkers = [];
-let currentKilledWorkers = [];
-let possibleHires = [];
+let allWorkers = [],
+    currentWorkers = [],
+    currentInjuredWorkers = [],
+    currentKilledWorkers = [],
+    possibleHires = [];
 
+let equity = 4,
+    staticIncome,
+    variableIncome;
 
 function getRandNum(array) {
     /* Returns a random number between 0 and length of the 'availableNothingPolicies' array. */
