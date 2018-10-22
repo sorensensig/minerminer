@@ -256,6 +256,8 @@ app.get('/hireWorker/:index', function(req, res) {
         users[req.session.userId].getPossibleHires(),
         req.params.index);
 
+    users[req.session.userId].applyHireCost(6);
+
     res.redirect('/employee-folder');
 });
 
