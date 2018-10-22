@@ -165,6 +165,11 @@ function findType(workers, type, type2){
     return 0;
 }
 
+function randomize(array){
+
+}
+
+
 let makeExport = {
     getAllWorkers: async function(allWorkers){
         /* Retrieves list of all workers
@@ -240,6 +245,11 @@ let makeExport = {
             }
             resolve(possibleHires);
         });
+    },
+    randomizeArray: async function(array){
+        /* prints all workers in array (only used during testing)
+        */
+        return await randomize(array);
     },
     printWorkers: function(workers){
         /* prints all workers in array (only used during testing)
