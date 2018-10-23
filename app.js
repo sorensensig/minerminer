@@ -151,13 +151,15 @@ app.get('/whs-policies', async function(req, res){
     }
 });
 
-app.get('/whs-policies/:option', function(req, res) {
+app.get('/whs-policies/:option', async function(req, res) {
     /* this function takes the players choice from the policy page, stores it and then redirects the player to game screen
     */
 
     let option = req.params.option;
 
     let outputArray = [];
+
+    let affectedEmployee;
 
     if (option === 'Deny') {
         let shortTerm = req.session.currentPolicy.shortTermDenyEffect,
@@ -191,7 +193,27 @@ app.get('/whs-policies/:option', function(req, res) {
         });
     }
 
+    switch (outputArray[0].policyOptionFunction){
+        case "Kill":
+            affectedEmployee = await api.killWorker(users[req.session.userId].getAllWorkers(), users[req.session.userId].getCurrentWorkers(), users[req.session.userId].getCurrentKilledWorkers());
+            console.log("Kill");
+            break;
+        case "Injure:":
+            affectedEmployee = await api.injureWorker(users[req.session.userId].getAllWorkers(), users[req.session.userId].getCurrentWorkers(), users[req.session.userId].getCurrentInjuredWorkers());
+            users[req.session.userId].workerProductionReduction(1);
+            console.log("Injure");
+            break;
+        case "Nothing":
+            console.log("Nothing");
+            break;
+        default:
+            console.log("Nothing");
+            break;
+    }
+
+
     req.session.toMonthlySummary.push(outputArray[0]);
+
     users[req.session.userId].setPolicyDisplayed(false);
     users[req.session.userId].deleteFromAvailablePolicies();
     req.session.currentPolicy = undefined;
@@ -204,28 +226,6 @@ app.get('/monthly-report', async function(req, res){
     then is sends all decisions and the affected employees to result page
     */
     let equity = users[req.session.userId].getAndUpdateEquity();
-
-    console.log(equity);
-
-    for(let i = 0; i < req.session.toMonthlySummary.length; i++){
-        switch (req.session.toMonthlySummary[i].policyOptionFunction){
-            case "Kill":
-                api.killWorker(users[req.session.userId].getAllWorkers(), users[req.session.userId].getCurrentWorkers(), users[req.session.userId].getCurrentKilledWorkers());
-                console.log("Kill");
-                break;
-            case "Injure:":
-                api.injureWorker(users[req.session.userId].getAllWorkers(), users[req.session.userId].getCurrentWorkers(), users[req.session.userId].getCurrentInjuredWorkers());
-                users[req.session.userId].workerProductionReduction(1);
-                console.log("Injure");
-                break;
-            case "Nothing":
-                console.log("Nothing");
-                break;
-            default:
-                console.log("Nothing");
-                break;
-        }
-    }
 
     let affectedEmployees = await api.getCurrentInjuredAndKilled(users[req.session.userId].getCurrentWorkers());
 
