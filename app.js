@@ -153,31 +153,39 @@ app.get('/whs-policies/:option', function(req, res) {
     /* this function takes the players choice from the policy page, stores it and then redirects the player to game screen
     */
 
-    // REMEMBER TO USE THE POLICY LONG TERM AND SHORT TERM EFFECTS FROM APPROVE AND DENY HERE.
-    // shortTermDenyEffect
-    // longTermDenyEffect
-    // shortTermApproveEffect
-    // longTermApproveEffect
-
     let option = req.params.option;
 
     let outputArray = [];
 
     if (option === 'Deny') {
+        let shortTerm = req.session.currentPolicy.shortTermDenyEffect,
+            longTerm = req.session.currentPolicy.longTermDenyEffect;
+
+        users[req.session.userId].setWHSEffects(shortTerm, longTerm);
+
         outputArray.push({
             policyTitle : req.session.currentPolicy.policyTitle,
             policyText : req.session.currentPolicy.policyText,
             policyOption : req.session.currentPolicy.policyDenyOption,
             policyOptionFunction : req.session.currentPolicy.policyDenyOptionFunction,
-            policyChoice: "Denied"
+            policyChoice: "Denied",
+            policyShortTermEffect: shortTerm,
+            policyLongTermEffect: longTerm
         });
     } else {
+        let shortTerm = req.session.currentPolicy.shortTermApproveEffect,
+            longTerm = req.session.currentPolicy.longTermApproveEffect;
+
+        users[req.session.userId].setWHSEffects(shortTerm, longTerm);
+
         outputArray.push({
             policyTitle : req.session.currentPolicy.policyTitle,
             policyText : req.session.currentPolicy.policyText,
             policyOption : req.session.currentPolicy.policyApproveOption,
             policyOptionFunction : req.session.currentPolicy.policyApproveOptionFunction,
-            policyChoice: "Approved"
+            policyChoice: "Approved",
+            policyShortTermEffect: shortTerm,
+            policyLongTermEffect: longTerm
         });
     }
 
@@ -193,6 +201,8 @@ app.get('/monthly-report', async function(req, res){
     /* Iterates though all decisions made by player, starts appropriate functions
     then is sends all decisions and the affected employees to result page
     */
+    let equity = users[req.session.userId].getAndUpdateEquity();
+
     for(let i = 0; i < req.session.toMonthlySummary.length; i++){
         switch (req.session.toMonthlySummary[i].policyOptionFunction){
             case "Kill":
