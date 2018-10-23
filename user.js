@@ -88,12 +88,16 @@ module.exports = function() {
             return new Promise(async function(resolve, reject) {
                 if (availableNothingPolicies !== undefined && availableKillPolicies !== undefined && availableInjurePolicies !== undefined) {
                     // get policy from correct array
-                    let params = [availableNothingPolicies];
+                    let params = [];
 
-                    if(canBeKilled) {
+                    if(availableNothingPolicies.length > 0){
+                        params.push(availableNothingPolicies);
+                    }
+
+                    if(canBeKilled && availableKillPolicies.length > 0) {
                         params.push(availableKillPolicies)
                     }
-                    if(canBeInjured) {
+                    if(canBeInjured && availableInjurePolicies.length > 0) {
                         params.push(availableInjurePolicies);
                     }
 
