@@ -64,7 +64,7 @@ function createPolicies(array, path) {
             for (let i = 0; i < objectsAsStringArray.length; i++) {
                 let toObject = objectsAsStringArray[i].split(' ~ ');
                 array[i] = new Policy(i, toObject[0], toObject[1], toObject[2], toObject[3], toObject[4], toObject[5],
-                    toObject[6], toObject[7], toObject[8], toObject[9], toObject[10], toObject[11]);
+                    toObject[6], toObject[7], parseInt(toObject[8]), parseInt(toObject[9]), parseInt(toObject[10]), parseInt(toObject[11]));
             }
             resolve(array);
         });

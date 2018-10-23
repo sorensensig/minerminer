@@ -22,19 +22,19 @@ function makeAllWorkers(allWorkers){
             amount of people is the total amount and injured and fatal are the total amount of each type
             counter is just the counter to go through the entire list of people in API
             */
-            let amountOfPeople = 100;
-            let injured = 50;
-            let fatal = 50;
-            let counter = 0;
+            let amountOfPeople = 100,
+                injured = 50,
+                fatal = 50,
+                counter = 0;
 
             while(amountOfPeople > 0){
                 /* goodtype becomes false if the type of injury is wrong
                 */
-                let goodType = true;
-                let comment = "";
-                let name = parsed["result"]["records"][counter]["Name"];
-                let year = parsed["result"]["records"][counter]["Year"];
-                let type = parsed["result"]["records"][counter]["Remarks"];
+                let goodType = true,
+                    comment = "",
+                    name = parsed["result"]["records"][counter]["Name"],
+                    year = parsed["result"]["records"][counter]["Year"],
+                    type = parsed["result"]["records"][counter]["Remarks"];
 
                 /* Splits up Remarks column from API and if they are successfully split into type and comment it is considered to good
                 */
@@ -197,8 +197,9 @@ let makeExport = {
     injureWorker: function(allWorkers, workers, injured){
         /* Injures a worker
         */
-        let index = findType(workers, "Injured", "Injured");
-        let allIndex = findAllWorkerIndex(allWorkers, workers, index);
+        let index = findType(workers, "Injured", "Injured"),
+            allIndex = findAllWorkerIndex(allWorkers, workers, index);
+
         allWorkers[allIndex].injured = true;
         workers[index].injured = true;
         workers[index].production = 1;
@@ -208,8 +209,9 @@ let makeExport = {
     killWorker: function(allWorkers, workers, killed){
         /* Kills a worker
         */
-        let index  = findType(workers, "Killed", "Fatal");
-        let allIndex = findAllWorkerIndex(allWorkers, workers, index);
+        let index  = findType(workers, "Killed", "Fatal"),
+            allIndex = findAllWorkerIndex(allWorkers, workers, index);
+
         allWorkers[allIndex].alive = false;
         workers[index].alive = false;
         killed.push(workers.splice(index, 1));
@@ -232,9 +234,9 @@ let makeExport = {
     },
     getPossibleHires: async function(allWorkers){
         return new Promise(function(resolve, reject){
-            let possibleHires = [];
-            let amountOfHires = 10;
-            let counter = 0;
+            let possibleHires = [],
+                amountOfHires = 10,
+                counter = 0;
 
             while (amountOfHires > 0 && counter < allWorkers.length){
                 if(!allWorkers[counter].employed){

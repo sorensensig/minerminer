@@ -78,6 +78,7 @@ app.get('/game', async function(req, res){
     /* Start timer in user for time limit for cycle
     This timers also controls when WHS policies are available
     */
+
     users[req.session.userId].startCycleTimer();
 });
 
@@ -85,6 +86,7 @@ app.get('/employee-folder', async function(req, res){
     /* Renders employee folder based on the list of current employees of the player
     When this page loads and the global timer has run out, the player is redirected to monthly report.
     */
+
     if(users[req.session.userId].getCurrentCycleTime() >= users[req.session.userId].getTotalCycleTime()){
         res.redirect('/monthly-report');
     }else {
@@ -202,6 +204,8 @@ app.get('/monthly-report', async function(req, res){
     then is sends all decisions and the affected employees to result page
     */
     let equity = users[req.session.userId].getAndUpdateEquity();
+
+    console.log(equity);
 
     for(let i = 0; i < req.session.toMonthlySummary.length; i++){
         switch (req.session.toMonthlySummary[i].policyOptionFunction){

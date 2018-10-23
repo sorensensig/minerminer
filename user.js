@@ -21,8 +21,8 @@ let allWorkers = [],
     possibleHires = [];
 
 let equity = 4,
-    staticIncome,
-    variableIncome;
+    staticIncome = 0,
+    variableIncome = 0;
 
 async function incomeToEquity() {
     let equityArr = [];
@@ -187,8 +187,11 @@ module.exports = function() {
         getPossibleHires: function(){
             return possibleHires;
         },
-        getEquity: function(){
+        getEquity: async function(){
             return equity;
+        },
+        getVariableIncome: async function(){
+            return variableIncome;
         },
         setAllWorkers: async function(){
             allWorkers = await api.getAllWorkers(allWorkers);
