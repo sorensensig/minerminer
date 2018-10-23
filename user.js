@@ -24,6 +24,19 @@ let equity = 4,
     staticIncome,
     variableIncome;
 
+async function incomeToEquity() {
+    let equityArr = [];
+    equityArr.push(equity);
+    equity += (staticIncome + variableIncome);
+    equityArr.push(equity);
+    return equityArr;
+}
+
+function addWHSEffect(shortTerm, longTerm) {
+    staticIncome += longTerm;
+    variableIncome += shortTerm;
+}
+
 function getRandNum(array) {
     /* Returns a random number between 0 and length of the 'availableNothingPolicies' array. */
     return new Promise(async function(resolve, reject) {
@@ -203,7 +216,12 @@ module.exports = function() {
         },
         workerProductionReduction: function(cost){
             variableIncome -= cost;
+        },
+        getAndUpdateEquity: async function() {
+            return await incomeToEquity();
+        },
+        setWHSEffects(shortTerm, longTerm) {
+            addWHSEffect(shortTerm, longTerm);
         }
-
     }
 };
