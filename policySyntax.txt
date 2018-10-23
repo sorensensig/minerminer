@@ -1,0 +1,2 @@
+policyTitle(str) ~ policyText(str) ~ policyDenyOption(str) ~ policyApproveOption(str) ~ policyDenyOptionFunction(str)(Kill/Injure/Nothing) ~ policyApproveOptionFunction(str)(Kill/Injure/Nothing) ~ policyDenyHint(str) ~ policyApproveHint(str) ~ shortTermDenyEffect(int)(-10 -> 10) ~ longTermDenyEffect(int)(-10 -> 10) ~ shortTermApproveEffect(int)(-10 -> 10) ~ longTermApproveEffect(int)(-10 -> 10)
+*

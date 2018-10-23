@@ -174,6 +174,9 @@ module.exports = function() {
         getPossibleHires: function(){
             return possibleHires;
         },
+        getEquity: function(){
+            return equity;
+        },
         setAllWorkers: async function(){
             allWorkers = await api.getAllWorkers(allWorkers);
         },
@@ -198,8 +201,9 @@ module.exports = function() {
         setPossibleHires: function(workers){
             possibleHires = workers;
         },
-        applyHireCost: function(cost){
+        applyHireCost: function(cost, production){
             equity -= cost;
+            variableIncome += production;
         },
         workerProductionReduction: function(cost){
             variableIncome -= cost;

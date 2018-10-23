@@ -257,12 +257,14 @@ app.get('/fireWorker/:index', async function(req, res) {
 app.get('/hireWorker/:index', function(req, res) {
     /* Resets the game for the player.
     */
-    api.hireWorker(users[req.session.userId].getAllWorkers(),
-        users[req.session.userId].getCurrentWorkers(),
-        users[req.session.userId].getPossibleHires(),
-        req.params.index);
+    if (users[req.session.userId].getEquity() > 6){
+        api.hireWorker(users[req.session.userId].getAllWorkers(),
+            users[req.session.userId].getCurrentWorkers(),
+            users[req.session.userId].getPossibleHires(),
+            req.params.index);
 
-    users[req.session.userId].applyHireCost(6);
+        users[req.session.userId].applyHireCost(6, 2);
+    }
 
     res.redirect('/employee-folder');
 });
