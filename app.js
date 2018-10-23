@@ -69,6 +69,7 @@ app.get('/game', async function(req, res){
     /* Starts the game and renders game page
     When this page loads and global timer has run out, the player is redirected to monthly report.
     */
+
     if(users[req.session.userId].getCurrentCycleTime() >= users[req.session.userId].getTotalCycleTime()){
             res.redirect('/monthly-report');
     }else{
@@ -267,16 +268,19 @@ app.get('/fireWorker/:index', async function(req, res) {
     res.redirect('/employee-folder');
 });
 
-app.get('/hireWorker/:index', function(req, res) {
+app.get('/hireWorker/:index', async function(req, res) {
     /* Resets the game for the player.
     */
-    if (users[req.session.userId].getEquity() > 6){
+    if (await users[req.session.userId].getEquity() >= 6){
+        console.log("Hire");
         api.hireWorker(users[req.session.userId].getAllWorkers(),
             users[req.session.userId].getCurrentWorkers(),
             users[req.session.userId].getPossibleHires(),
             req.params.index);
 
         users[req.session.userId].applyHireCost(6, 2);
+    }else{
+        console.log("No moneyz");
     }
 
     res.redirect('/employee-folder');
