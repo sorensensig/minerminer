@@ -21,8 +21,21 @@ let allWorkers = [],
     possibleHires = [];
 
 let equity = 4,
-    staticIncome,
-    variableIncome;
+    staticIncome = 0,
+    variableIncome = 0;
+
+async function incomeToEquity() {
+    let equityArr = [];
+    equityArr.push(equity);
+    equity += (staticIncome + variableIncome);
+    equityArr.push(equity);
+    return equityArr;
+}
+
+function addWHSEffect(shortTerm, longTerm) {
+    staticIncome += longTerm;
+    variableIncome += shortTerm;
+}
 
 function getRandNum(array) {
     /* Returns a random number between 0 and length of the 'availableNothingPolicies' array. */
@@ -75,12 +88,16 @@ module.exports = function() {
             return new Promise(async function(resolve, reject) {
                 if (availableNothingPolicies !== undefined && availableKillPolicies !== undefined && availableInjurePolicies !== undefined) {
                     // get policy from correct array
-                    let params = [availableNothingPolicies];
+                    let params = [];
 
-                    if(canBeKilled) {
+                    if(availableNothingPolicies.length > 0){
+                        params.push(availableNothingPolicies);
+                    }
+
+                    if(canBeKilled && availableKillPolicies.length > 0) {
                         params.push(availableKillPolicies)
                     }
-                    if(canBeInjured) {
+                    if(canBeInjured && availableInjurePolicies.length > 0) {
                         params.push(availableInjurePolicies);
                     }
 
@@ -174,6 +191,12 @@ module.exports = function() {
         getPossibleHires: function(){
             return possibleHires;
         },
+        getEquity: async function(){
+            return equity;
+        },
+        getVariableIncome: async function(){
+            return variableIncome;
+        },
         setAllWorkers: async function(){
             allWorkers = await api.getAllWorkers(allWorkers);
         },
@@ -198,12 +221,18 @@ module.exports = function() {
         setPossibleHires: function(workers){
             possibleHires = workers;
         },
-        applyHireCost: function(cost){
+        applyHireCost: function(cost, production){
             equity -= cost;
+            variableIncome += production;
         },
         workerProductionReduction: function(cost){
             variableIncome -= cost;
+        },
+        getAndUpdateEquity: async function() {
+            return await incomeToEquity();
+        },
+        setWHSEffects(shortTerm, longTerm) {
+            addWHSEffect(shortTerm, longTerm);
         }
-
     }
 };

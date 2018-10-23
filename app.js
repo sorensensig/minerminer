@@ -78,6 +78,7 @@ app.get('/game', async function(req, res){
     /* Start timer in user for time limit for cycle
     This timers also controls when WHS policies are available
     */
+
     users[req.session.userId].startCycleTimer();
 });
 
@@ -85,6 +86,7 @@ app.get('/employee-folder', async function(req, res){
     /* Renders employee folder based on the list of current employees of the player
     When this page loads and the global timer has run out, the player is redirected to monthly report.
     */
+
     if(users[req.session.userId].getCurrentCycleTime() >= users[req.session.userId].getTotalCycleTime()){
         res.redirect('/monthly-report');
     }else {
@@ -121,7 +123,6 @@ app.get('/whs-policies', async function(req, res){
              /* if there is no policy it creates one
              */
             } else {
-                // CHECK IF CURRENT EMPLOYEES ARE EITHER [KILLABLE, INJURABLE, OR NONE]
                 let canBeKilled = false,
                     canBeInjured = false,
                     currentWorkers = users[req.session.userId].getCurrentWorkers();
@@ -149,39 +150,69 @@ app.get('/whs-policies', async function(req, res){
     }
 });
 
-app.get('/whs-policies/:option', function(req, res) {
+app.get('/whs-policies/:option', async function(req, res) {
     /* this function takes the players choice from the policy page, stores it and then redirects the player to game screen
     */
-
-    // REMEMBER TO USE THE POLICY LONG TERM AND SHORT TERM EFFECTS FROM APPROVE AND DENY HERE.
-    // shortTermDenyEffect
-    // longTermDenyEffect
-    // shortTermApproveEffect
-    // longTermApproveEffect
 
     let option = req.params.option;
 
     let outputArray = [];
 
+    let affectedEmployee;
+
     if (option === 'Deny') {
+        let shortTerm = req.session.currentPolicy.shortTermDenyEffect,
+            longTerm = req.session.currentPolicy.longTermDenyEffect;
+
+        users[req.session.userId].setWHSEffects(shortTerm, longTerm);
+
         outputArray.push({
             policyTitle : req.session.currentPolicy.policyTitle,
             policyText : req.session.currentPolicy.policyText,
             policyOption : req.session.currentPolicy.policyDenyOption,
             policyOptionFunction : req.session.currentPolicy.policyDenyOptionFunction,
-            policyChoice: "Denied"
+            policyChoice: "Denied",
+            policyShortTermEffect: shortTerm,
+            policyLongTermEffect: longTerm
         });
     } else {
+        let shortTerm = req.session.currentPolicy.shortTermApproveEffect,
+            longTerm = req.session.currentPolicy.longTermApproveEffect;
+
+        users[req.session.userId].setWHSEffects(shortTerm, longTerm);
+
         outputArray.push({
             policyTitle : req.session.currentPolicy.policyTitle,
             policyText : req.session.currentPolicy.policyText,
             policyOption : req.session.currentPolicy.policyApproveOption,
             policyOptionFunction : req.session.currentPolicy.policyApproveOptionFunction,
-            policyChoice: "Approved"
+            policyChoice: "Approved",
+            policyShortTermEffect: shortTerm,
+            policyLongTermEffect: longTerm
         });
     }
 
+    switch (outputArray[0].policyOptionFunction){
+        case "Kill":
+            affectedEmployee = await api.killWorker(users[req.session.userId].getAllWorkers(), users[req.session.userId].getCurrentWorkers(), users[req.session.userId].getCurrentKilledWorkers());
+            console.log("Kill");
+            break;
+        case "Injure:":
+            affectedEmployee = await api.injureWorker(users[req.session.userId].getAllWorkers(), users[req.session.userId].getCurrentWorkers(), users[req.session.userId].getCurrentInjuredWorkers());
+            users[req.session.userId].workerProductionReduction(1);
+            console.log("Injure");
+            break;
+        case "Nothing":
+            console.log("Nothing");
+            break;
+        default:
+            console.log("Nothing");
+            break;
+    }
+
+
     req.session.toMonthlySummary.push(outputArray[0]);
+
     users[req.session.userId].setPolicyDisplayed(false);
     users[req.session.userId].deleteFromAvailablePolicies();
     req.session.currentPolicy = undefined;
@@ -193,25 +224,7 @@ app.get('/monthly-report', async function(req, res){
     /* Iterates though all decisions made by player, starts appropriate functions
     then is sends all decisions and the affected employees to result page
     */
-    for(let i = 0; i < req.session.toMonthlySummary.length; i++){
-        switch (req.session.toMonthlySummary[i].policyOptionFunction){
-            case "Kill":
-                api.killWorker(users[req.session.userId].getAllWorkers(), users[req.session.userId].getCurrentWorkers(), users[req.session.userId].getCurrentKilledWorkers());
-                console.log("Kill");
-                break;
-            case "Injure:":
-                api.injureWorker(users[req.session.userId].getAllWorkers(), users[req.session.userId].getCurrentWorkers(), users[req.session.userId].getCurrentInjuredWorkers());
-                users[req.session.userId].workerProductionReduction(1);
-                console.log("Injure");
-                break;
-            case "Nothing":
-                console.log("Nothing");
-                break;
-            default:
-                console.log("Nothing");
-                break;
-        }
-    }
+    let equity = users[req.session.userId].getAndUpdateEquity();
 
     let affectedEmployees = await api.getCurrentInjuredAndKilled(users[req.session.userId].getCurrentWorkers());
 
@@ -257,12 +270,14 @@ app.get('/fireWorker/:index', async function(req, res) {
 app.get('/hireWorker/:index', function(req, res) {
     /* Resets the game for the player.
     */
-    api.hireWorker(users[req.session.userId].getAllWorkers(),
-        users[req.session.userId].getCurrentWorkers(),
-        users[req.session.userId].getPossibleHires(),
-        req.params.index);
+    if (users[req.session.userId].getEquity() > 6){
+        api.hireWorker(users[req.session.userId].getAllWorkers(),
+            users[req.session.userId].getCurrentWorkers(),
+            users[req.session.userId].getPossibleHires(),
+            req.params.index);
 
-    users[req.session.userId].applyHireCost(6);
+        users[req.session.userId].applyHireCost(6, 2);
+    }
 
     res.redirect('/employee-folder');
 });
