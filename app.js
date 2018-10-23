@@ -123,7 +123,6 @@ app.get('/whs-policies', async function(req, res){
              /* if there is no policy it creates one
              */
             } else {
-                // CHECK IF CURRENT EMPLOYEES ARE EITHER [KILLABLE, INJURABLE, OR NONE]
                 let canBeKilled = false,
                     canBeInjured = false,
                     currentWorkers = users[req.session.userId].getCurrentWorkers();
