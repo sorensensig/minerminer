@@ -44,16 +44,21 @@ h1 {
     height: 50px; }
 
 .btn-primary {
-  background: goldenrod;
+  background: url("../images/button.png");
+  width: 100%;
   padding: 25px;
   text-align: center;
   font-size: 18px;
   margin-top: 50px;
-  margin-right: 25px;
-  border-radius: 100px; }
+  margin-right: 25px; }
 
 .btn-primary:hover {
   text-decoration: none; }
+
+.btn-secondary {
+  background: url("../images/button2.png");
+  width: 150px;
+  height: 50px; }
 
 .game-content {
   width: 100%;
@@ -81,12 +86,32 @@ h1 {
   cursor: no-drop; }
 
 .game-folder {
-  height: 100vh;
-  background: url("../images/employee-folder.png");
-  background-size: 100%; }
+  height: 100vh; }
+  .game-folder #game-background {
+    height: 100vh;
+    position: absolute;
+    margin: 0 8%; }
+  .game-folder #employees {
+    position: relative;
+    height: 80%;
+    width: 100%;
+    overflow: scroll;
+    margin: 70px -30%; }
 
 .game-folder #employee-details {
   margin-top: 100px; }
+  .game-folder #employee-details h4 {
+    text-align: center; }
+  .game-folder #employee-details ul h6 {
+    text-align: center; }
+  .game-folder #employee-details ul div {
+    padding-bottom: 25px; }
+    .game-folder #employee-details ul div span {
+      font-weight: bold;
+      padding-bottom: 15px; }
+    .game-folder #employee-details ul div button {
+      float: right;
+      margin-top: -22px; }
 
 .game-folder .game-options {
   width: 100%; }

@@ -5,23 +5,70 @@
     <div class="game-options row">
         <a href="game"><img src="/images/back.png"></a>
     </div>
-    <div id="employee-details" class="col-xl-5 offset-xl-7">
-        <h1> Employee Folder </h1>
-        <ul>
-            <% for (var i = 0; i < workers.length; i++) { %>
-                <li> <%= workers[i].name%> </li>
-                <button onclick="fireWorker(<%= i%>)" class="btn-primary">Fire Worker</button>
-            <% }%>
-        </ul>
+    <div id="game-background">
+        <img class="mx-auto d-block" src="/images/open-folder.png">
     </div>
-    <div id="hire-details" class="col-xl-5 offset-xl-7">
-        <ul>
-            <% for (var j = 0; j < possibleHires.length; j++) { %>
-                <li> <%= possibleHires[j].name%> </li>
-                <button onclick="hireWorker(<%= j%>)" class="btn-primary">Hire Worker</button>
+    <div id="employees">
+        <div id="employee-details" class="col-xl-5 offset-xl-7">
+            <!--<h1> Employee Folder </h1>-->
+            <h4>All Workers</h4>
+            <ul>
+                <% for (var i = 0; i < workers.length; i++) { %>
+                <div>
+                    <li> <%= workers[i].name%> </li>
+                    <span> Hiring Cost: <%= workers[i].hireCost %> </span>
+                    <button onclick="fireWorker(<%= i%>)" class="btn-secondary">Fire Worker</button>
+                </div>
+                <% }%>
+            </ul>
+        </div>
+        <div id="employee-details" class="col-xl-5 offset-xl-7">
+            <h4>Injured Workers</h4>
+            <ul>
+                <% if (workersInjured.length == 0) { %>
+                    <h6>None Injured</h6>
+                <% } %>
 
-            <% }%>
-        </ul>
+                <% if (workersInjured.length > 0) { %>
+                    <% for (var i = 0; i < workersInjured.length; i++) { %>
+                        <div>
+                            <li> <%= workersInjured[i].name%> </li>
+                            <span> Hiring Cost: <%= workersInjured[i].hireCost %></span>
+                            <button onclick="fireWorker(<%= i%>)" class="btn-secondary">Fire Worker</button>
+                        </div>
+                    <% }%>
+                <% } %>
+            </ul>
+        </div>
+        <div id="employee-details" class="col-xl-5 offset-xl-7">
+            <h4>Killed Workers</h4>
+
+            <ul>
+                <% if (workersKilled.length == 0) { %>
+                    <h6>None Killed</h6>
+                <% } %>
+                <% if (workersKilled.length > 0) { %>
+                    <% for (var i = 0; i < workersKilled.length; i++) { %>
+                        <div>
+                            <li> <%= workersKilled[i].name%> </li>
+                            <button onclick="fireWorker(<%= i%>)" class="btn-secondary">Fire Worker</button>
+                        </div>
+                    <% }%>
+                <% } %>
+            </ul>
+        </div>
+        <div id="employee-details" class="col-xl-5 offset-xl-7">
+            <h4>Workers for Hire</h4>
+            <ul>
+                <% for (var j = 0; j < possibleHires.length; j++) { %>
+                <div>
+                    <li> <%= possibleHires[j].name%> </li>
+                    <span> Hiring Cost: <%= possibleHires[i].hireCost %></span>
+                    <button onclick="hireWorker(<%= j%>)" class="btn-secondary">Hire Worker</button>
+                </div>
+                <% }%>
+            </ul>
+        </div>
     </div>
 </div>
 <% include partials/footer %>
