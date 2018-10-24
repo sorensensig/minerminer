@@ -120,7 +120,7 @@ app.get('/whs-policies', async function(req, res){
             if (check2) {
                 let data = req.session.currentPolicy;
                 let timer = users[req.session.userId].getCurrentCycleTime();
-                res.render('whsPolicies', {data: data.policyText, status: true, timer: timer});
+                res.render('whsPolicies', {data: data, status: true, timer: timer});
              /* if there is no policy it creates one
              */
             } else {
@@ -139,7 +139,7 @@ app.get('/whs-policies', async function(req, res){
                 let data = await users[req.session.userId].getRandPolicy(canBeKilled, canBeInjured);
                 let timer = users[req.session.userId].getCurrentCycleTime();
                 req.session.currentPolicy = data;
-                res.render('whsPolicies', {data: data.policyText, status: true, timer: timer});
+                res.render('whsPolicies', {data: data, status: true, timer: timer});
                 await users[req.session.userId].setPolicyDisplayed(true);
             }
         /* if there are no policies available it renders the following

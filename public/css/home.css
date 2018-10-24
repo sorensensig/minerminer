@@ -111,7 +111,7 @@ h1 {
       padding-bottom: 15px; }
     .game-folder #employee-details ul div button {
       float: right;
-      margin-top: -22px; }
+      margin-top: -32px; }
 
 .game-folder .game-options {
   width: 100%; }
@@ -121,14 +121,28 @@ h1 {
   margin-left: 50px; }
 
 .policy-folder {
-  height: 100vh;
-  background: url("../images/policy-folder.png") no-repeat;
-  background-size: auto 100%;
-  background-position: center; }
+  height: 100vh; }
+  .policy-folder #game-background {
+    height: 100vh;
+    position: absolute;
+    margin: 0 8%; }
   .policy-folder .policy-details {
-    margin-top: 100px; }
+    position: relative;
+    height: 80%;
+    width: 100%;
+    margin: 70px 25%; }
+    .policy-folder .policy-details h1 {
+      margin-left: 18%; }
     .policy-folder .policy-details p {
-      width: 50%; }
+      width: 50%;
+      text-align: center;
+      margin-top: 40px; }
+      .policy-folder .policy-details p span {
+        font-weight: bold; }
+    .policy-folder .policy-details button {
+      margin-top: 25px; }
+    .policy-folder .policy-details button#approve {
+      margin-left: 15%; }
 
 .policy-folder .game-options > a {
   margin-top: 50px;
@@ -137,7 +151,7 @@ h1 {
 #policy-decision img {
   position: absolute;
   bottom: 15%;
-  left: 48%; }
+  left: 18%; }
 
 #tutorial-content .game-item {
   cursor: pointer; }

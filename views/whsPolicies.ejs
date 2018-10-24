@@ -6,14 +6,22 @@
         <a href="game"><img src="/images/back.png"></a>
     </div>
 
+    <div id="game-background">
+        <img class="mx-auto d-block" src="/images/open-folder.png">
+    </div>
+
     <div class="policy-details offset-xl-4">
         <h1> WHS Policies </h1>
 
-        <p> <%= data %></p>
+        <p> <%= data.policyText %></p>
         <% if(status) { %>
-            <button id="approve">Approve</button>
-            <button id="deny">Deny</button>
+            <button id="approve" class="btn-secondary">Approve</button>
+            <button id="deny" class="btn-secondary">Deny</button>
         <% } %>
+
+        <p><span>Approve Hint: </span><%= data.policyApproveHint %></p>
+        <p><span>Deny Hint: </span><%= data.policyDenyHint %></p>
+
         <div id="policy-decision">
 
         </div>

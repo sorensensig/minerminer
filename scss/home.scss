@@ -163,7 +163,7 @@ h1 {
       }
       button {
         float: right;
-        margin-top: -22px;
+        margin-top: -32px;
       }
     }
   }
@@ -180,15 +180,43 @@ h1 {
 // WHS policies
 .policy-folder {
   height: 100vh;
-  background: url("../images/policy-folder.png") no-repeat;
-  background-size: auto 100%;
-  background-position: center;
+  //background: url("../images/policy-folder.png") no-repeat;
+  //background-size: auto 100%;
+  //background-position: center;
+
+  #game-background {
+    height: 100vh;
+    position: absolute;
+    margin: 0 8%;
+  }
 
   .policy-details {
-    margin-top: 100px;
+    //margin-top: 100px;
+    position: relative;
+    height: 80%;
+    width: 100%;
+    margin: 70px 25%;
+
+    h1 {
+      //text-align: center;
+      margin-left: 18%;
+    }
 
     p {
       width: 50%;
+      text-align: center;
+      margin-top: 40px;
+
+      span {
+        font-weight: bold;
+      }
+    }
+
+    button {
+      margin-top: 25px;
+    }
+    button#approve {
+      margin-left: 15%;
     }
   }
 }
@@ -201,7 +229,7 @@ h1 {
 #policy-decision img {
   position: absolute;
   bottom: 15%;
-  left: 48%;
+  left: 18%;
 }
 
 // Tutorial page
