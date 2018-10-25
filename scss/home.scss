@@ -124,8 +124,8 @@ h1 {
 // Employee folder
 .game-folder {
   height: 100vh;
-  //background: url("../images/open-folder.png");
-  //background-size: 100%;
+  background: url("../images/book-bg.png") repeat;
+  background-size: 100%;
 
   #game-background {
     height: 100vh;
@@ -180,9 +180,8 @@ h1 {
 // WHS policies
 .policy-folder {
   height: 100vh;
-  //background: url("../images/policy-folder.png") no-repeat;
-  //background-size: auto 100%;
-  //background-position: center;
+  background: url("../images/book-bg.png") repeat;
+  background-size: 100%;
 
   #game-background {
     height: 100vh;

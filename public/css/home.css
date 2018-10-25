@@ -86,7 +86,9 @@ h1 {
   cursor: no-drop; }
 
 .game-folder {
-  height: 100vh; }
+  height: 100vh;
+  background: url("../images/book-bg.png") repeat;
+  background-size: 100%; }
   .game-folder #game-background {
     height: 100vh;
     position: absolute;
@@ -121,7 +123,9 @@ h1 {
   margin-left: 50px; }
 
 .policy-folder {
-  height: 100vh; }
+  height: 100vh;
+  background: url("../images/book-bg.png") repeat;
+  background-size: 100%; }
   .policy-folder #game-background {
     height: 100vh;
     position: absolute;
