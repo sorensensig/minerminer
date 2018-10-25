@@ -74,9 +74,8 @@ app.get('/game', async function(req, res){
             res.redirect('/monthly-report');
     }else{
         let timer = users[req.session.userId].getCurrentCycleTime();
-        res.render('game', {timer: timer, income: await users[req.session.userId].getVariableIncome(), equity: await users[req.session.userId].getEquity(), policyNumber: await users[req.session.userId].getActivePolicies()});
-        res.render('game', {timer: timer, policyNumber: await users[req.session.userId].getActivePolicies(), affectedEmployee: users[req.session.userId].getAffectedEmployee()});
->>>>>>> New_try
+        res.render('game', {timer: timer, income: await users[req.session.userId].getVariableIncome(), equity: await users[req.session.userId].getEquity(), policyNumber: await users[req.session.userId].getActivePolicies(), affectedEmployee: users[req.session.userId].getAffectedEmployee()});
+
     }
     /* Start timer in user for time limit for cycle
     This timers also controls when WHS policies are available
