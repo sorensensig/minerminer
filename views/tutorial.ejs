@@ -1,8 +1,17 @@
 <% include partials/header %>
 <div class="game-content" id="tutorial-content">
+    <!--<div class="game-options">-->
+        <a id="tutorial-back" href="/"><img src="/images/back.png"></a>
+    <!--</div>-->
     <!--<a href="/">-->
         <!--<img src="/images/tutorial.png" >-->
     <!--</a>-->
+    <div class="hud">
+        <span> 60 </span>
+        <h5>Income: $1000</h5>
+        <h5>Equity: $1000</h5>
+    </div>
+
     <div id="room-content">
         <img class="game-item" id="game-item1" src="/images/folder1.png" >
         <img class="game-item" id="game-item2" src="/images/folder2.png">
@@ -24,6 +33,13 @@
         </p>
     </div>
 
+    <div class="tutorial-popup" id="tutorial-popup3">
+        <h3>Game Resources</h3>
+        <p>
+            This section indicates how much time you have left to finish the game and also the resources you have to play.
+        </p>
+    </div>
+
 </div>
 <% include partials/footer %>
 
@@ -31,6 +47,12 @@
     $(function() {
         var moveLeft = 20;
         var moveDown = 10;
+
+        $('.hud').hover(function(e) {
+            $('div#tutorial-popup3').show();
+        }, function() {
+            $('div#tutorial-popup3').hide();
+        });
 
         $('img#game-item1').hover(function(e) {
             $('div#tutorial-popup1').show();

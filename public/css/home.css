@@ -77,7 +77,7 @@ h1 {
   position: absolute; }
   #room-content .game-item {
     position: relative;
-    left: 400px;
+    left: 0;
     top: 900px; }
     #room-content .game-item img:hover {
       transform: scale(1.1); }
@@ -153,11 +153,18 @@ h1 {
   bottom: 15%;
   left: 18%; }
 
+#tutorial-content #tutorial-back {
+  position: absolute;
+  top: 50px;
+  left: 50px;
+  z-index: 1000; }
+
 #tutorial-content .game-item {
   cursor: pointer; }
 
 #tutorial-popup1,
-#tutorial-popup2 {
+#tutorial-popup2,
+#tutorial-popup3 {
   display: none;
   position: absolute;
   width: 280px;

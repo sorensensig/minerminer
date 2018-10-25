@@ -108,7 +108,7 @@ h1 {
 
   .game-item {
     position: relative;
-    left: 400px;
+    left: 0;
     top: 900px;
 
     img:hover {
@@ -234,13 +234,20 @@ h1 {
 
 // Tutorial page
 #tutorial-content {
+  #tutorial-back {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    z-index: 1000;
+  }
   .game-item {
     cursor: pointer;
   }
 }
 
 #tutorial-popup1,
-#tutorial-popup2 {
+#tutorial-popup2,
+#tutorial-popup3{
   display: none;
   position: absolute;
   width: 280px;
@@ -251,6 +258,7 @@ h1 {
   border: 1px solid #1a1a1a;
   font-size: 90%;
 }
+
 //.tutorial-content {
 //  width: 100vh;
 //}
