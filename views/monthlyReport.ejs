@@ -15,6 +15,7 @@
                 <p><span>Policy Title: </span> <%= index.policyTitle %> </p>
                 <p><span>Policy Option: </span> <%= index.policyOption %> </p>
                 <p><span>Policy Choice: </span><%= index.policyChoice %> </p>
+                <%});%>
     <div id="policy-summary" class="col-xl-4 offset-xl-4">
         <!--Display summary of the Policies made by the user -->
         <h5>Equity</h5>
@@ -40,6 +41,7 @@
                 <p><span>Comment: </span> <%= index.comment %> </p>
                 <hr>
             <% }); %>
+        <%}%>
         </div>
         <div id="employee-summary" class="col-xl-4 offset-xl-4">
             <!-- Display summary of the employees affected by usery's decisions -->
