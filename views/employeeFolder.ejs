@@ -79,8 +79,7 @@
 
 <!-- Script to run timer -->
 <script>
-    let timeElem = $(".timer span");
-    timeElem.css("color", "white");
+    let timeElem = $(".hud span");
 
     let timer = timeElem.html();
     setInterval(function(){ timer--; if(timer>=0) { timeElem.html(timer)}}, 1000);

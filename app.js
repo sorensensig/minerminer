@@ -149,7 +149,7 @@ app.get('/whs-policies', async function(req, res){
         */
         } else {
             let timer = users[req.session.userId].getCurrentCycleTime();
-            res.render('whsPolicies', {data: 'There are currently no new policies.', status: false, timer: timer});
+            res.render('whsPolicies', {data: 'There are currently no new policies.', status: false, timer: timer, income: await users[req.session.userId].getVariableIncome(), equity: await users[req.session.userId].getEquity()});
         }
     }
 });
@@ -195,6 +195,7 @@ app.get('/whs-policies/:option', async function(req, res) {
             policyLongTermEffect: longTerm
         });
     }
+    console.log('Worker is: ' + outputArray[0].policyOptionFunction);
 
     switch (outputArray[0].policyOptionFunction){
         case "Kill":
@@ -213,6 +214,7 @@ app.get('/whs-policies/:option', async function(req, res) {
         default:
             users[req.session.userId].setAffectedEmployee(null);
             console.log("Nothing");
+            console.log("Default");
             break;
     }
 

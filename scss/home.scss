@@ -290,7 +290,13 @@ h1 {
 // Heads Up Display (HUD) for the game
 .hud {
   position: absolute;
-  width: 100px;
+  right: 0;
+  width: 250px;
+  height: 150px;
   padding: 10px;
+  border: 4px solid #2e3131;
   font-size: 32px;
+  text-align: center;
+  background: aliceblue;
+  z-index: 1000;
 }
