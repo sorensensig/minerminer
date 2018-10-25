@@ -200,9 +200,10 @@ app.get('/whs-policies/:option', async function(req, res) {
     switch (outputArray[0].policyOptionFunction){
         case "Kill":
             users[req.session.userId].setAffectedEmployee(await api.killWorker(users[req.session.userId].getAllWorkers(), users[req.session.userId].getCurrentWorkers(), users[req.session.userId].getCurrentKilledWorkers()));
+            users[req.session.userId].workerProductionReduction(2);
             console.log("Kill");
             break;
-        case "Injure:":
+        case "Injure":
             users[req.session.userId].setAffectedEmployee(await api.injureWorker(users[req.session.userId].getAllWorkers(), users[req.session.userId].getCurrentWorkers(), users[req.session.userId].getCurrentInjuredWorkers()));
             users[req.session.userId].workerProductionReduction(1);
             console.log("Injure");
@@ -213,7 +214,6 @@ app.get('/whs-policies/:option', async function(req, res) {
             break;
         default:
             users[req.session.userId].setAffectedEmployee(null);
-            console.log("Nothing");
             console.log("Default");
             break;
     }
@@ -248,7 +248,7 @@ app.get('/monthly-report', async function(req, res){
 
     console.log(affectedEmployees);
 
-    res.render('monthlyReport', {toMonthlyReport: req.session.toMonthlySummary, affectedEmployees: affectedEmployees, income: await users[req.session.userId].getVariableIncome(), equity: equity});
+    res.render('monthlyReport', {toMonthlyReport: req.session.toMonthlySummary, affectedEmployees: affectedEmployees, income: await users[req.session.userId].getVariableIncome(), equity: equity, staticIncome: await users[req.session.userId].getStaticIncome()});
 });
 
 app.get('/player-reset', function(req, res) {
