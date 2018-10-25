@@ -16,8 +16,7 @@
                 <% for (var i = 0; i < workers.length; i++) { %>
                 <div>
                     <li> <%= workers[i].name%> </li>
-                    <span> Hiring Cost: <%= workers[i].hireCost %> </span><br>
-                    <span> Production Cost: <%= workers[i].production %></span>
+                    <span> Production: $<%= workers[i].production*100 %></span>
                     <button onclick="fireWorker(<%= i%>)" class="btn-secondary">Fire Worker</button>
                 </div>
                 <% }%>
@@ -34,8 +33,7 @@
                     <% for (var i = 0; i < workersInjured.length; i++) { %>
                         <div>
                             <li> <%= workersInjured[i].name%> </li>
-                            <span> Hiring Cost: <%= workersInjured[i].hireCost %></span><br>
-                            <span> Production Cost: <%= workersInjured[i].production %></span>
+                            <span> Production: $<%= workersInjured[i].production*100 %></span>
                             <button onclick="fireWorker(<%= i%>)" class="btn-secondary">Fire Worker</button>
                         </div>
                     <% }%>
@@ -65,8 +63,8 @@
                 <% for (var j = 0; j < possibleHires.length; j++) { %>
                 <div>
                     <li> <%= possibleHires[j].name%> </li>
-                    <span> Hiring Cost: <%= possibleHires[i].hireCost %></span><br>
-                    <span> Production Cost: <%= possibleHires[i].production %></span>
+                    <span> Hiring Cost: $<%= possibleHires[i].hireCost*100 %></span><br>
+                    <span> Production: $<%= possibleHires[i].production*100 %></span>
                     <button onclick="hireWorker(<%= j%>)" class="btn-secondary">Hire Worker</button>
                 </div>
                 <% }%>

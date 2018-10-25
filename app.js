@@ -74,7 +74,7 @@ app.get('/game', async function(req, res){
             res.redirect('/monthly-report');
     }else{
         let timer = users[req.session.userId].getCurrentCycleTime();
-        res.render('game', {timer: timer, policyNumber: await users[req.session.userId].getActivePolicies()});
+        res.render('game', {timer: timer, income: await users[req.session.userId].getVariableIncome(), equity: await users[req.session.userId].getEquity(), policyNumber: await users[req.session.userId].getActivePolicies()});
     }
     /* Start timer in user for time limit for cycle
     This timers also controls when WHS policies are available
@@ -95,6 +95,8 @@ app.get('/employee-folder', async function(req, res){
         let possibleHires = await api.getPossibleHires(users[req.session.userId].getAllWorkers());
         users[req.session.userId].setPossibleHires(possibleHires);
         res.render('employeeFolder', {workers: users[req.session.userId].getCurrentWorkers(),
+            income: await users[req.session.userId].getVariableIncome(),
+            equity: await users[req.session.userId].getEquity(),
             workersInjured: users[req.session.userId].getCurrentInjuredWorkers(),
             workersKilled: users[req.session.userId].getCurrentKilledWorkers(),
             possibleHires: possibleHires,
@@ -120,7 +122,7 @@ app.get('/whs-policies', async function(req, res){
             if (check2) {
                 let data = req.session.currentPolicy;
                 let timer = users[req.session.userId].getCurrentCycleTime();
-                res.render('whsPolicies', {data: data, status: true, timer: timer});
+                res.render('whsPolicies', {data: data, status: true, timer: timer, income: await users[req.session.userId].getVariableIncome(), equity: await users[req.session.userId].getEquity()});
              /* if there is no policy it creates one
              */
             } else {
@@ -139,7 +141,7 @@ app.get('/whs-policies', async function(req, res){
                 let data = await users[req.session.userId].getRandPolicy(canBeKilled, canBeInjured);
                 let timer = users[req.session.userId].getCurrentCycleTime();
                 req.session.currentPolicy = data;
-                res.render('whsPolicies', {data: data, status: true, timer: timer});
+                res.render('whsPolicies', {data: data, status: true, timer: timer, income: await users[req.session.userId].getVariableIncome(), equity: await users[req.session.userId].getEquity()});
                 await users[req.session.userId].setPolicyDisplayed(true);
             }
         /* if there are no policies available it renders the following
@@ -225,11 +227,11 @@ app.get('/monthly-report', async function(req, res){
     /* Iterates though all decisions made by player, starts appropriate functions
     then is sends all decisions and the affected employees to result page
     */
-    let equity = users[req.session.userId].getAndUpdateEquity();
+    let equity = await users[req.session.userId].getAndUpdateEquity();
 
     let affectedEmployees = await api.getCurrentInjuredAndKilled(users[req.session.userId].getCurrentWorkers());
 
-    res.render('monthlyReport', {toMonthlyReport: req.session.toMonthlySummary, affectedEmployees: affectedEmployees});
+    res.render('monthlyReport', {toMonthlyReport: req.session.toMonthlySummary, affectedEmployees: affectedEmployees, income: await users[req.session.userId].getVariableIncome(), equity: equity});
 });
 
 app.get('/player-reset', function(req, res) {
