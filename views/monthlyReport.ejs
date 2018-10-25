@@ -3,6 +3,10 @@
 <div class="monthly-report">
     <div id="policy-summary" class="col-xl-4 offset-xl-4">
         <!--Display summary of the Policies made by the user -->
+        <h5>Equity</h5>
+        <p>Previous equity: $<%= equity[0]*100 %></p>
+        <p>Variable income: $<%= income*100 %></p>
+        <p>Current equity: $<%= equity[1]*100 %></p>
         <h5>Policy Summary</h5>
         <% toMonthlyReport.forEach(function(index){ %>
             <p><span>Policy Title: </span> <%= index.policyTitle %> </p>
