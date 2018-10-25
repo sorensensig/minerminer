@@ -194,7 +194,7 @@ let makeExport = {
         allWorkers[allIndex].employed = true;
         workers.push(possibleHires[index]);
     },
-    injureWorker: function(allWorkers, workers, injured){
+    injureWorker: async function(allWorkers, workers, injured){
         /* Injures a worker
         */
         let index = findType(workers, "Injured", "Injured"),
@@ -203,10 +203,11 @@ let makeExport = {
         allWorkers[allIndex].injured = true;
         workers[index].injured = true;
         workers[index].production = 1;
-        injured.push(injured.splice(index, 1));
-        return injured[-1];
+        let worker = workers.splice(index, 1)
+        injured.push(worker[0]);
+        return injured[injured.length-1];
     },
-    killWorker: function(allWorkers, workers, killed){
+    killWorker: async function(allWorkers, workers, killed){
         /* Kills a worker
         */
         let index  = findType(workers, "Killed", "Fatal"),
@@ -214,8 +215,9 @@ let makeExport = {
 
         allWorkers[allIndex].alive = false;
         workers[index].alive = false;
-        killed.push(workers.splice(index, 1));
-        return killed[-1];
+        let worker = workers.splice(index, 1);
+        killed.push(worker[0]);
+        return killed[killed.length-1];
     },
     getCurrentInjuredAndKilled: function(workers){
         /* Retrieves all workers that either have been killed or injured
@@ -227,6 +229,7 @@ let makeExport = {
                     outArray.push(workers[i]);
                 }
             }
+            console.log(outArray);
             resolve(outArray);
 
         });

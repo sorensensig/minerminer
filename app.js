@@ -74,12 +74,12 @@ app.get('/game', async function(req, res){
             res.redirect('/monthly-report');
     }else{
         let timer = users[req.session.userId].getCurrentCycleTime();
-        res.render('game', {timer: timer, policyNumber: await users[req.session.userId].getActivePolicies()});
+        res.render('game', {timer: timer, policyNumber: await users[req.session.userId].getActivePolicies(), affectedEmployee: users[req.session.userId].getAffectedEmployee()});
     }
     /* Start timer in user for time limit for cycle
     This timers also controls when WHS policies are available
     */
-
+    users[req.session.userId].setAffectedEmployee(null);
     users[req.session.userId].startCycleTimer();
 });
 
@@ -195,22 +195,23 @@ app.get('/whs-policies/:option', async function(req, res) {
 
     switch (outputArray[0].policyOptionFunction){
         case "Kill":
-            affectedEmployee = await api.killWorker(users[req.session.userId].getAllWorkers(), users[req.session.userId].getCurrentWorkers(), users[req.session.userId].getCurrentKilledWorkers());
+            users[req.session.userId].setAffectedEmployee(await api.killWorker(users[req.session.userId].getAllWorkers(), users[req.session.userId].getCurrentWorkers(), users[req.session.userId].getCurrentKilledWorkers()));
             console.log("Kill");
             break;
         case "Injure:":
-            affectedEmployee = await api.injureWorker(users[req.session.userId].getAllWorkers(), users[req.session.userId].getCurrentWorkers(), users[req.session.userId].getCurrentInjuredWorkers());
+            users[req.session.userId].setAffectedEmployee(await api.injureWorker(users[req.session.userId].getAllWorkers(), users[req.session.userId].getCurrentWorkers(), users[req.session.userId].getCurrentInjuredWorkers()));
             users[req.session.userId].workerProductionReduction(1);
             console.log("Injure");
             break;
         case "Nothing":
+            users[req.session.userId].setAffectedEmployee(null);
             console.log("Nothing");
             break;
         default:
+            users[req.session.userId].setAffectedEmployee(null);
             console.log("Nothing");
             break;
     }
-
 
     req.session.toMonthlySummary.push(outputArray[0]);
 
@@ -227,7 +228,20 @@ app.get('/monthly-report', async function(req, res){
     */
     let equity = users[req.session.userId].getAndUpdateEquity();
 
-    let affectedEmployees = await api.getCurrentInjuredAndKilled(users[req.session.userId].getCurrentWorkers());
+    let affectedEmployees = [];
+    if(users[req.session.userId].getCurrentInjuredWorkers().length > 0){
+        for(let worker of users[req.session.userId].getCurrentInjuredWorkers()){
+            affectedEmployees.push(worker);
+        }
+
+    }
+    if(users[req.session.userId].getCurrentKilledWorkers().length > 0){
+        for(let worker of users[req.session.userId].getCurrentKilledWorkers()){
+            affectedEmployees.push(worker);
+        }
+    }
+
+    console.log(affectedEmployees);
 
     res.render('monthlyReport', {toMonthlyReport: req.session.toMonthlySummary, affectedEmployees: affectedEmployees});
 });
@@ -250,6 +264,7 @@ app.get('/continue', function(req, res) {
     users[req.session.userId].setActivePolicies();
     users[req.session.userId].setCurrentCycleTime();
     users[req.session.userId].setCurrentEmployeeProduction();
+    users[req.session.userId].setAffectedEmployee(null);
     req.session.toMonthlySummary = [];
     req.session.currentPolicy = undefined;
     users[req.session.userId].setPolicyDisplayed(false);

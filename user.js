@@ -18,7 +18,8 @@ let allWorkers = [],
     currentWorkers = [],
     currentInjuredWorkers = [],
     currentKilledWorkers = [],
-    possibleHires = [];
+    possibleHires = [],
+    affectedEmployee = null;
 
 let equity = 4,
     staticIncome = 0,
@@ -233,6 +234,12 @@ module.exports = function() {
         },
         setWHSEffects(shortTerm, longTerm) {
             addWHSEffect(shortTerm, longTerm);
+        },
+        setAffectedEmployee(employee){
+            affectedEmployee = employee;
+        },
+        getAffectedEmployee(){
+            return affectedEmployee;
         }
     }
 };
