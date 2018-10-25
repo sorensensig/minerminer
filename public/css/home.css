@@ -170,19 +170,31 @@ h1 {
 
 .monthly-report {
   height: 100vh;
-  background: url("../images/policy-folder.png") no-repeat;
+  background: url("../images/report-background.png") no-repeat;
   background-size: auto 100%;
   background-position: center; }
   .monthly-report h3 {
     text-align: center; }
-  .monthly-report #policy-summary {
-    top: 15%; }
-  .monthly-report #employee-summary {
-    top: 15%; }
-  .monthly-report #policy-summary span, .monthly-report #employee-summary span {
-    font-weight: bold; }
-  .monthly-report #resetDiv {
-    margin-top: 20%; }
+  .monthly-report #report-content {
+    height: 68%;
+    position: relative;
+    top: 24%;
+    overflow: scroll; }
+    .monthly-report #report-content #equity-summary {
+      top: 6%;
+      text-align: center; }
+    .monthly-report #report-content #policy-summary {
+      top: 12%;
+      text-align: center; }
+    .monthly-report #report-content #employee-summary {
+      top: 18%;
+      text-align: center; }
+    .monthly-report #report-content #equity-summary h5, .monthly-report #report-content #policy-summary h5, .monthly-report #report-content #employee-summary h5 {
+      color: #eb9532; }
+    .monthly-report #report-content #equity-summary span, .monthly-report #report-content #policy-summary span, .monthly-report #report-content #employee-summary span {
+      font-weight: bold; }
+    .monthly-report #report-content #resetDiv {
+      margin-top: 20%; }
 
 .hud {
   position: absolute;

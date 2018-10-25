@@ -263,27 +263,44 @@ h1 {
 // Monthly report
 .monthly-report {
   height: 100vh;
-  background: url("../images/policy-folder.png") no-repeat;
+  background: url("../images/report-background.png") no-repeat;
   background-size: auto 100%;
   background-position: center;
 
   h3 {
     text-align: center;
   }
-  #policy-summary {
-    top: 15%;
-  }
-  #employee-summary {
-    top: 15%;
-  }
-  #policy-summary, #employee-summary {
-    span {
-      font-weight: bold;
-    }
-  }
 
-  #resetDiv {
-    margin-top: 20%;
+  #report-content {
+    height: 68%;
+    position: relative;
+    top: 24%;
+    overflow: scroll;
+
+    #equity-summary {
+      top: 6%;
+      text-align: center;
+    }
+    #policy-summary {
+      top: 12%;
+      text-align: center;
+    }
+    #employee-summary {
+      top: 18%;
+      text-align: center;
+    }
+    #equity-summary, #policy-summary, #employee-summary {
+      h5 {
+        color: #eb9532;
+      }
+      span {
+        font-weight: bold;
+      }
+    }
+
+    #resetDiv {
+      margin-top: 20%;
+    }
   }
 }
 
