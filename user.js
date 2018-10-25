@@ -232,14 +232,17 @@ module.exports = function() {
         getAndUpdateEquity: async function() {
             return await incomeToEquity();
         },
-        setWHSEffects(shortTerm, longTerm) {
+        setWHSEffects: async function(shortTerm, longTerm) {
             addWHSEffect(shortTerm, longTerm);
         },
-        setAffectedEmployee(employee){
+        setAffectedEmployee: async function(employee){
             affectedEmployee = employee;
         },
-        getAffectedEmployee(){
+        getAffectedEmployee: async function(){
             return affectedEmployee;
+        },
+        getStaticIncome: async function(){
+            return staticIncome;
         }
     }
 };

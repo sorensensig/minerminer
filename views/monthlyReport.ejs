@@ -15,6 +15,29 @@
                 <p><span>Policy Title: </span> <%= index.policyTitle %> </p>
                 <p><span>Policy Option: </span> <%= index.policyOption %> </p>
                 <p><span>Policy Choice: </span><%= index.policyChoice %> </p>
+    <div id="policy-summary" class="col-xl-4 offset-xl-4">
+        <!--Display summary of the Policies made by the user -->
+        <h5>Equity</h5>
+        <p>Previous equity: $<%= equity[0]*100 %></p>
+        <p>Variable income: $<%= income*100 %></p>
+        <p>Static income: $<%= staticIncome*100 %></p>
+        <p>Current equity: $<%= equity[1]*100 %></p>
+        <h5>Policy Summary</h5>
+        <% toMonthlyReport.forEach(function(index){ %>
+            <p><span>Policy Title: </span> <%= index.policyTitle %> </p>
+            <p><span>Policy Option: </span> <%= index.policyOption %> </p>
+            <p><span>Policy Choice: </span><%= index.policyChoice %> </p>
+            <hr>
+        <% }); %>
+    </div>
+    <div id="employee-summary" class="col-xl-4 offset-xl-4">
+        <!-- Display summary of the employees affected by usery's decisions -->
+        <h5>Affected Employees</h5>
+        <% if(affectedEmployees) { %>
+            <% affectedEmployees.forEach(function(index){ %>
+                <p><span>Name: </span><%= index.name %> </p>
+                <p><span>Type of Incident: </span> <%= index.type %> </p>
+                <p><span>Comment: </span> <%= index.comment %> </p>
                 <hr>
             <% }); %>
         </div>
