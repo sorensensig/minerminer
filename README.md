@@ -2,7 +2,7 @@
 MinerMiner was developed as part of the course DECO7180 - Design Computing Studio 1 at the University of Queensland.
 
 The team was tasked with using open APIs from the government of Queensland to build a novel website.
-Please see the reports for further details.
+Please see the reports for further details https://drive.google.com/drive/folders/1fIyzwLnK-WnLNbiRiMWS2FAGq1zg1qyo?usp=sharing.
 
 ## Live Demo
 This website is not a final product. Please read the tutorial before you start the game as there is no onboarding process for the game otherwise.
